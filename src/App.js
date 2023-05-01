@@ -1,5 +1,5 @@
 import "./App.scss";
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AiOutlineEnter, AiOutlineSearch } from "react-icons/ai";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { GoCloudUpload } from "react-icons/go";

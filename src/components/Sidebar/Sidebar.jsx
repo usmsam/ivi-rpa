@@ -1,12 +1,8 @@
-import controlIcon from "../../controlIcon.svg";
-import settingsIcon from "../../settings.png";
-import logoutIcon from "../../logout.png";
 import "./sidebar.scss";
 import { SiTraefikproxy } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
 import { ImExit } from "react-icons/im";
-import { AiFillControl } from "react-icons/ai";
-import { Link, BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 export const Sidebar = () => {
   return (
     <div className="sidebar">
