@@ -3,6 +3,7 @@ import { SiTraefikproxy } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
 import { ImExit } from "react-icons/im";
 import { Link } from "react-router-dom";
+import { AiFillControl } from "react-icons/ai";
 export const Sidebar = () => {
   return (
     <div className="sidebar">
