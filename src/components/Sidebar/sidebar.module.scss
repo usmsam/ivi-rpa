@@ -55,6 +55,12 @@
         background: #343247;
         color: #F90175;
     }
+
+    &.active {
+        border-left: 3px solid #F90175;
+        background: #343247;
+        color: #F90175;
+    }
 }
 
 .middle {
