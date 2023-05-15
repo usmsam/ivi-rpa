@@ -1,7 +1,6 @@
 import { AiOutlineEnter } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import s from "./profiles.module.scss";
-import { useState } from "react";
 
 export const Profiles = () => {
   return (
