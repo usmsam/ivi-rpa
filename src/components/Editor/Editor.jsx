@@ -47,8 +47,8 @@ export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
           placeholder="Enter time to live after click in seconds."
         />
         <div className={s.editor_bottons}>
-          <button className={s.editor_bottons, s.default}>Save</button>
-          <button className={s.editor_bottons,s.dashed}>Reset</button>
+          <button className={cn(s.editor_bottons, s.default)}>Save</button>
+          <button className={cn(s.editor_bottons,s.dashed)}>Reset</button>
         </div>
       </div>
     </div>
