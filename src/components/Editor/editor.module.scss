@@ -24,6 +24,7 @@
     border-radius: 7px;
     padding: 25px 37px;
     overflow-y: scroll;
+    padding-bottom: 100px;
 }
 
 .title {
@@ -67,4 +68,32 @@
     &-dashed {
         border: 2px dashed #D90B6B !important;
     }
+}
+
+.timepicker {
+    // width: 100%;
+    border: 1px solid #F90175;
+    border-radius: 5px;
+    padding: 10px 17px;
+    margin-bottom: 15px;
+
+    line {
+        stroke: #fff;
+    }
+
+    >* {
+        border: none;
+        color: #FFFFFF;
+    }
+}
+
+
+
+.label {
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 22px;
+
+    color: #FFFFFF;
+    margin-bottom: 7px;
 }

@@ -1,11 +1,9 @@
 import { AiOutlineEnter } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
-import { Input } from "../../components/Input/Input";
 import s from "./profiles.module.scss";
 import { useState } from "react";
 
 export const Profiles = () => {
-  const [state, setstate] = useState("");
   return (
     <div className={s.content}>
       <div className={s.fileUpload}>
@@ -23,17 +21,9 @@ export const Profiles = () => {
           <thead>
             <tr className={s.tableHead}>
               <th>ID</th>
+              <th>Name</th>
               <th>Кол-во сгенерированных</th>
-              <th>
-                <div className={s.thSearch}>
-                  Предел генерации:{" "}
-                  <Input
-                    className={s.input}
-                    value={state}
-                    onChange={setstate}
-                  />
-                </div>
-              </th>
+              <th>Предел генерации:</th>
               <th></th>
             </tr>
           </thead>
@@ -41,6 +31,7 @@ export const Profiles = () => {
           <tbody>
             <tr>
               <th>41613</th>
+              <th>Тут должно быть имя</th>
               <td>7214</td>
               <td>10000</td>
               <td>

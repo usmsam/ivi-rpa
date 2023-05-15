@@ -1,0 +1,13 @@
+.select {
+    border: 1px solid #F90175;
+    border-radius: 5px;
+    margin-bottom: 15px;
+
+
+
+    [class*="-control"] {
+        background: transparent !important;
+        border: none !important;
+    }
+
+}

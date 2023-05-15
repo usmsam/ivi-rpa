@@ -1,11 +1,22 @@
 import cn from "classnames";
-
+import React, { useState } from "react";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Input } from "../Input/Input";
 
 import s from "./editor.module.scss";
+import { MultiSelect } from "../MultiSelect/MultiSelect";
 
 export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
+  const [value, onChange] = useState("10:00");
+  const [checked, setChecked] = useState(false);
+  const options = [
+    { value: "0", label: "Chocolate" },
+    { value: "1", label: "Strawberry" },
+    { value: "2", label: "Vanilla" },
+  ];
   return (
     <div
       className={cn(s.editor, { [s.active]: isActive })}
@@ -18,11 +29,9 @@ export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
           subtitle="Enter scenario name."
           placeholder="Enter name"
         />
-        <Input
-          label="Frame URLs:"
-          subtitle="Enter frame URLs"
-          placeholder="Enter frame URL’s separated by commas."
-        />
+        <div className={s.label}>Frame URLs:</div>
+        <MultiSelect options={options} />
+
         <Input
           label="Time to Live (sec):"
           subtitle="Enter TTL"
@@ -30,25 +39,37 @@ export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
         />
         <Input label="Width:" placeholder="Enter width" />
         <Input label="Height:" placeholder="Enter height" />
-        <Input
-          label="Backlist:"
-          subtitle="Enter backlist URLs"
-          placeholder="Enter backlist URLs separated by commas."
+
+        <div className={s.label}>Backlist:</div>
+        <MultiSelect options={options} />
+        <Checkbox label="Clicks" checked={checked} setChecked={setChecked} />
+        {checked && (
+          <>
+            <Input
+              label="Click Probability:"
+              subtitle="Enter click probability"
+              placeholder="Enter click probability as s decimal between 0 and 1."
+            />
+            <Input
+              label="Time to Live After Click (sec):"
+              subtitle="Enter TTL after click"
+              placeholder="Enter time to live after click in seconds."
+            />
+          </>
+        )}
+        <div className={s.label}>Work Time</div>
+        <TimePicker
+          onChange={onChange}
+          value={value}
+          maxTime="23:59"
+          disableClock
+          className={s.timepicker}
         />
-        <Checkbox label="Clicks" />
-        <Input
-          label="Click Probability:"
-          subtitle="Enter click probability"
-          placeholder="Enter click probability as s decimal between 0 and 1."
-        />
-        <Input
-          label="Time to Live After Click (sec):"
-          subtitle="Enter TTL after click"
-          placeholder="Enter time to live after click in seconds."
-        />
+        <div className={s.label}>Tags</div>
+        <MultiSelect options={options} />
         <div className={s.editor_bottons}>
           <button className={cn(s.editor_bottons, s.default)}>Save</button>
-          <button className={cn(s.editor_bottons,s.dashed)}>Reset</button>
+          <button className={cn(s.editor_bottons, s.dashed)}>Reset</button>
         </div>
       </div>
     </div>
