@@ -1,5 +1,4 @@
-import { AiOutlineEnter, AiOutlineSearch } from "react-icons/ai";
-import { GoCloudUpload } from "react-icons/go";
+import { AiOutlineEnter } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import { Input } from "../../components/Input/Input";
 import s from "./profiles.module.scss";

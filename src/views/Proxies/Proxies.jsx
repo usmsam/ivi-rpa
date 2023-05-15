@@ -1,11 +1,5 @@
-import { AiOutlineEnter, AiOutlineSearch } from "react-icons/ai";
-import { RiArrowDownSLine } from "react-icons/ri";
+import { AiOutlineEnter } from "react-icons/ai";
 import { GoCloudUpload } from "react-icons/go";
-import {
-  BsFillPlayFill,
-  BsFillRecordFill,
-  BsPencilSquare,
-} from "react-icons/bs";
 
 import s from "./proxies.module.scss";
 

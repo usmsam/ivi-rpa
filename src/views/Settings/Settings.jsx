@@ -1,12 +1,3 @@
-import { AiOutlineEnter, AiOutlineSearch } from "react-icons/ai";
-import { RiArrowDownSLine } from "react-icons/ri";
-import { GoCloudUpload } from "react-icons/go";
-import {
-  BsFillPlayFill,
-  BsFillRecordFill,
-  BsPencilSquare,
-} from "react-icons/bs";
-
 import s from "./settings.module.scss";
 
 export const Settings = () => {

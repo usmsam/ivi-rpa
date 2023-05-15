@@ -1,4 +1,4 @@
-import { AiOutlineEnter, AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineEnter } from "react-icons/ai";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { GoCloudUpload } from "react-icons/go";
 import {
@@ -81,7 +81,7 @@ export const Scenarios = ({ onClick = () => {} }) => {
               <td>9,0</td>
               <td>sxaas</td>
               <td>dasd</td>
-              <td scope="cell">
+              <td >
                 <BsPencilSquare
                   className={s.BsPencilSquare}
                   onClick={onClick}

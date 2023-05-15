@@ -3,16 +3,16 @@ import cn from "classnames";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Input } from "../Input/Input";
 
-import "./editor.scss";
+import s from "./editor.module.scss";
 
 export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
   return (
     <div
-      className={cn("editor", { ["active"]: isActive })}
+      className={cn(s.editor, { [s.active]: isActive })}
       onClick={() => setIsActive(!isActive)}
     >
-      <div className="editorWrapper" onClick={(e) => e.stopPropagation()}>
-        <div className="title">Scenario Editor</div>
+      <div className={s.editorWrapper} onClick={(e) => e.stopPropagation()}>
+        <div className={s.title}>Scenario Editor</div>
         <Input
           label="Scenario Name:"
           subtitle="Enter scenario name."
@@ -46,9 +46,9 @@ export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
           subtitle="Enter TTL after click"
           placeholder="Enter time to live after click in seconds."
         />
-        <div className="editor_bottons">
-          <button className="editor_bottons-default">Save</button>
-          <button className="editor_bottons-dashed">Reset</button>
+        <div className={s.editor_bottons}>
+          <button className={s.editor_bottons}default">Save</button>
+          <button className={s.editor_bottons}dashed">Reset</button>
         </div>
       </div>
     </div>
