@@ -1,15 +1,46 @@
 import { AiOutlineEnter } from "react-icons/ai";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { GoCloudUpload } from "react-icons/go";
-import {
-  BsFillPlayFill,
-  BsFillRecordFill,
-  BsPencilSquare,
-} from "react-icons/bs";
+import { BsFillPlayFill, BsPencilSquare } from "react-icons/bs";
 
 import s from "./scenarios.module.scss";
+import { useEffect } from "react";
+import { getScenariosStats } from "../../shared/api/routes/scenarios";
+
+// const mock_scenarios = [
+//   {
+//     name: "",
+//     frame_urls: "",
+//     ttl: "",
+//     width: "",
+//     height: "",
+//     blacklist: "",
+//     clicks: "",
+//     click_prob: "",
+//     click_ttl: "",
+//     created_at: "",
+//     updated_at: "",
+//     id: "",
+//     status: "",
+//   },
+// ];
 
 export const Scenarios = ({ onClick = () => {} }) => {
+  // const [state, setState] = useState([]);
+
+  useEffect(() => {
+    try {
+      const getScenariosdt = async () => {
+        const data = await getScenariosStats();
+        console.log(data);
+        // setState(data);
+      };
+      getScenariosdt();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <div className={s.content}>
       <div className={s.fileUpload}>
@@ -81,14 +112,16 @@ export const Scenarios = ({ onClick = () => {} }) => {
               <td>9,0</td>
               <td>sxaas</td>
               <td>dasd</td>
-              <td >
+              <td>
+                {/* <Link to={`?edit=${1}`}> */}
                 <BsPencilSquare
                   className={s.BsPencilSquare}
                   onClick={onClick}
                 />
+                {/* </Link> */}
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <th className={s.idCol}>41613</th>
               <td>In-Stream Video Desktop</td>
               <td className={s.statusCol}>
@@ -105,11 +138,11 @@ export const Scenarios = ({ onClick = () => {} }) => {
               <td>
                 <BsPencilSquare className={s.BsPencilSquare} />
               </td>
-            </tr>
+            </tr> */}
           </tbody>
           <br></br>
         </table>
-        <div className={s.loadMore}>Ракрыть полностью ↓</div>
+        {/* <div className={s.loadMore}>Ракрыть полностью ↓</div> */}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { Input } from "../Input/Input";
 
 import s from "./editor.module.scss";
 import { MultiSelect } from "../MultiSelect/MultiSelect";
+import { postScenarios } from "../../shared/api/routes/scenarios";
 
 export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
   const [value, onChange] = useState("10:00");
@@ -17,6 +18,18 @@ export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
     { value: "1", label: "Strawberry" },
     { value: "2", label: "Vanilla" },
   ];
+
+  const onSubmit = () => {
+    try {
+      const getScenariosdt = async () => {
+        const data = await postScenarios();
+        console.log(data);
+      };
+      getScenariosdt();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
       className={cn(s.editor, { [s.active]: isActive })}
@@ -68,7 +81,12 @@ export const Editor = ({ isActive = false, setIsActive = () => {} }) => {
         <div className={s.label}>Tags</div>
         <MultiSelect options={options} />
         <div className={s.editor_bottons}>
-          <button className={cn(s.editor_bottons, s.default)}>Save</button>
+          <button
+            className={cn(s.editor_bottons, s.default)}
+            onClick={onSubmit}
+          >
+            Save
+          </button>
           <button className={cn(s.editor_bottons, s.dashed)}>Reset</button>
         </div>
       </div>

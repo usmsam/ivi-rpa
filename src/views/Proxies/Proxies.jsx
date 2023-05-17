@@ -44,7 +44,7 @@ export const Proxies = () => {
           </tbody>
           <br></br>
         </table>
-        <div className={s.loadMore}>Ракрыть полностью ↓</div>
+        {/* <div className={s.loadMore}>Ракрыть полностью ↓</div> */}
       </div>
     </div>
   );
