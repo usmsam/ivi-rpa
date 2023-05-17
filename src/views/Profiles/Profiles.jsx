@@ -1,10 +1,10 @@
 import { Fragment, useEffect } from "react";
-import { AiOutlineEnter } from "react-icons/ai";
+import { AiFillDelete, AiOutlineEnter } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { setProfiles } from "../../shared/store/slices/profiles";
 
-import { getProfiles } from "./../../shared/api/routes/profiles";
+import { getProfiles, profileDelete } from "./../../shared/api/routes/profiles";
 
 import s from "./profiles.module.scss";
 export const Profiles = ({
@@ -13,9 +13,13 @@ export const Profiles = ({
   setEditableProfile = () => {},
 }) => {
   const dispatch = useDispatch();
-
   let { profiles } = useSelector((state) => state.profiles);
-  console.log(profiles);
+
+  const deleteProfile = async (id) => {
+    const { data } = await profileDelete(id);
+    getProfiles().then((res) => dispatch(setProfiles(res.data)));
+  };
+
   useEffect(() => {
     try {
       const getScenariosdt = async () => {
@@ -71,6 +75,10 @@ export const Profiles = ({
                               onClick(e);
                               setEditableProfile(id);
                             }}
+                          />
+                          <AiFillDelete
+                            className={s.AiFillDelete}
+                            onClick={() => deleteProfile(id)}
                           />
                         </td>
                       </tr>

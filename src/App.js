@@ -1,5 +1,10 @@
 import s from "./App.module.scss";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  HashRouter,
+} from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 
 import { Provider } from "react-redux";
@@ -40,6 +45,7 @@ function App() {
       console.log(error);
     }
   }, []);
+
   return (
     <Provider store={store}>
       <Router>

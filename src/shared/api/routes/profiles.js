@@ -13,3 +13,6 @@ export const postProfiles = (data) => {
 export const updateProfile = (id, data) => {
   return api.put(endpoints.profileUpdate(id), data);
 };
+export const profileDelete = (id) => {
+  return api.delete(endpoints.profileDelete(id));
+};

@@ -4,7 +4,9 @@ import { Input } from "../Input/Input";
 
 import s from "./profileEdit.module.scss";
 import { MultiSelect } from "../MultiSelect/MultiSelect";
-import { postProfiles } from "../../shared/api/routes/profiles";
+import { getProfiles, postProfiles } from "../../shared/api/routes/profiles";
+import { useDispatch } from "react-redux";
+import { setProfiles } from "../../shared/store/slices/profiles";
 
 export const CreateProfile = ({
   isActive = false,
@@ -23,6 +25,8 @@ export const CreateProfile = ({
   const [tagsItems, setTags] = useState([]);
   const [platfomsItems, setPlatforms] = useState([]);
   const [enginesItems, setEngines] = useState([]);
+
+  const dispatch = useDispatch();
 
   const [DataContent, setDataContent] = useState({
     name: "",
@@ -83,6 +87,7 @@ export const CreateProfile = ({
         console.log(data);
         if (data.status === 200) {
           clear();
+          getProfiles().then((res) => dispatch(setProfiles(res.data)));
         }
       };
       getScenariosdt();

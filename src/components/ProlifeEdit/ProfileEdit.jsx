@@ -9,9 +9,12 @@ import { MultiSelect } from "../MultiSelect/MultiSelect";
 import { useEffect } from "react";
 import {
   getProfileByid,
+  getProfiles,
   updateProfile,
 } from "../../shared/api/routes/profiles";
 import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { setProfiles } from "../../shared/store/slices/profiles";
 
 export const ProfileEdit = ({
   isActive = false,
@@ -35,6 +38,8 @@ export const ProfileEdit = ({
   const tagsRef = useRef(null);
   const platformsRef = useRef(null);
   const enginesRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTags(
@@ -102,6 +107,7 @@ export const ProfileEdit = ({
       });
       if (data.status === 200) {
         setIsActive(false);
+        getProfiles().then((res) => dispatch(setProfiles(res.data)));
       }
     } catch (error) {}
   };

@@ -3,6 +3,7 @@ export const endpoints = {
   scenarios: "/scenarios",
   profiles: "/profiles",
   profileUpdate: (id)=>`/profile/${id}`,
+  profileDelete: (id)=>`/profile/${id}`,
   profileById: (id) => `/profile/${id}`,
   tags: "/tags",
   platforms: "/platforms",

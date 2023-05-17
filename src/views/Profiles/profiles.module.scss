@@ -157,6 +157,15 @@
 .BsPencilSquare {
     color: #F90175;
     cursor: pointer;
+    margin-right: 10px;
+}
+
+.AiFillDelete {
+    &:hover {
+        color: #F90175;
+    }
+
+    cursor: pointer;
 }
 
 .input {
