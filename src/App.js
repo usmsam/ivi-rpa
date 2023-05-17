@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  HashRouter,
+  // HashRouter,
 } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 

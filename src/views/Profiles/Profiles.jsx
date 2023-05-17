@@ -17,6 +17,7 @@ export const Profiles = ({
 
   const deleteProfile = async (id) => {
     const { data } = await profileDelete(id);
+    console.log(data);
     getProfiles().then((res) => dispatch(setProfiles(res.data)));
   };
 
