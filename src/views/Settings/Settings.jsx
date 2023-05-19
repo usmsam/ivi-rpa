@@ -1,6 +1,9 @@
+import { useState } from "react";
 import s from "./settings.module.scss";
-
+import { Input } from "../../components/Input/Input";
 export const Settings = () => {
+  const [state, setstate] = useState(false);
+  const [count, setcount] = useState(false);
   return (
     <div className={s.content}>
       <div className={s.fileUpload}>
@@ -16,34 +19,24 @@ export const Settings = () => {
           <GoCloudUpload className={s.GoCloudUpload} />
         </div> */}
       </div>
-
-      {/* <div className={s.table}>
-        <table>
-          <thead>
-            <tr className={s.tableHead}>
-              <th>#</th>
-              <th>Прокси (IP:PORT)</th>
-              <th>Статус</th>
-              <th>Логин</th>
-              <th>Тип</th>
-              <th>Отклик</th>
-            </tr>
-          </thead>
-          <br></br>
-          <tbody>
-            <tr>
-              <th>41613</th>
-              <td>185.220.35.242:36630</td>
-              <td>Valid</td>
-              <td>WI9cIj</td>
-              <td>HTTP(S)</td>
-              <td>640 ms</td>
-            </tr>
-          </tbody>
-          <br></br>
-        </table>
-        <div className={s.loadMore}>Ракрыть полностью ↓</div>
-      </div> */}
+      <div className={s.content}>
+        <div className={s.label}>Вся система : </div>
+        <button
+          className={s.editor_bottons}
+          onClick={() => setstate((prev) => !prev)}
+        >
+          {state ? "Остановить" : "Запустить"}
+        </button>
+        <br />
+        <br />
+        <div className={s.label}>Максимальное количество браузеров : </div>
+        <Input
+          className={s.input}
+          type={"number"}
+          value={count}
+          onChange={setcount}
+        />
+      </div>
     </div>
   );
 };
