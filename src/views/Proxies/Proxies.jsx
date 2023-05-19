@@ -1,9 +1,31 @@
-import { AiOutlineEnter } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { AiFillDelete, AiOutlineEnter } from "react-icons/ai";
 import { GoCloudUpload } from "react-icons/go";
+import { getProxies, proxieDelete } from "../../shared/api/routes/proxies";
 
 import s from "./proxies.module.scss";
 
 export const Proxies = () => {
+  const [state, setState] = useState([]);
+
+  const deleteProxie = async (id) => {
+    const { data } = await proxieDelete(id);
+    console.log(data);
+    getProxies().then((res) => setState(res.data));
+  };
+
+  useEffect(() => {
+    try {
+      const getScenariosdt = async () => {
+        const { data } = await getProxies();
+        console.log(data);
+        setState(data);
+      };
+      getScenariosdt();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <div className={s.content}>
       <div className={s.fileUpload}>
@@ -29,18 +51,43 @@ export const Proxies = () => {
               <th>Логин</th>
               <th>Тип</th>
               <th>Отклик</th>
+              <th></th>
             </tr>
           </thead>
           <br></br>
           <tbody>
-            <tr>
-              <th>41613</th>
-              <td>185.220.35.242:36630</td>
-              <td>Valid</td>
-              <td>WI9cIj</td>
-              <td>HTTP(S)</td>
-              <td>640 ms</td>
-            </tr>
+            {state.length &&
+              state.map(
+                ({
+                  delay,
+                  host,
+                  id,
+                  password,
+                  port,
+                  status,
+                  type,
+                  username,
+                }) => {
+                  return (
+                    <tr>
+                      <th>{id}</th>
+                      <td>
+                        {host}:{port}
+                      </td>
+                      <td>{status ? status : "-"}</td>
+                      <td>{username ? username : "-"}</td>
+                      <td>{type ? type : "-"}</td>
+                      <td>{delay ? delay : "-"}</td>
+                      <td>
+                        <AiFillDelete
+                          className={s.AiFillDelete}
+                          onClick={() => deleteProxie(id)}
+                        />
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
           </tbody>
           <br></br>
         </table>

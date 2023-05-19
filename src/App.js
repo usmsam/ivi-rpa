@@ -19,16 +19,23 @@ import { Scenarios } from "./views/Scenarios/Scenarios";
 import { Settings } from "./views/Settings/Settings";
 import { Profiles } from "./views/Profiles/Profiles";
 import { ProfileEdit } from "./components/ProlifeEdit/ProfileEdit";
-import { getEngines, getPlatforms, getTags } from "./shared/api/routes/tags";
+import {
+  getEngines,
+  getPlatforms,
+  getTags,
+  getUrls,
+} from "./shared/api/routes/tags";
 
 function App() {
   const [state, setstate] = useState(false);
   const [state2, setstate2] = useState(false);
   const [state3, setstate3] = useState(false);
   const [tags, settags] = useState([]);
+  const [urls, setUrls] = useState([]);
   const [platforms, setplatforms] = useState([]);
   const [engines, setengines] = useState([]);
   const [editableProfile, setEditableProfile] = useState(0);
+  const [editableScenario, setEditableScenario] = useState(0);
 
   useEffect(() => {
     try {
@@ -36,7 +43,10 @@ function App() {
         const { data: tags } = await getTags();
         const { data: platforms } = await getPlatforms();
         const { data: engines } = await getEngines();
+        const { data: urls } = await getUrls();
+        console.log(urls);
         settags(tags);
+        setUrls(urls);
         setplatforms(platforms);
         setengines(engines);
       };
@@ -49,7 +59,12 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Editor isActive={state} setIsActive={setstate} />
+        <Editor
+          isActive={state}
+          setIsActive={setstate}
+          urls={urls}
+          id={editableScenario}
+        />
         <ProfileEdit
           isActive={state2}
           setIsActive={setstate2}
@@ -81,7 +96,15 @@ function App() {
             </div>
 
             <Routes>
-              <Route path="/" element={<Scenarios onClick={setstate} />} />
+              <Route
+                path="/"
+                element={
+                  <Scenarios
+                    onClick={setstate}
+                    setEditableScenario={setEditableScenario}
+                  />
+                }
+              />
               <Route path="/proxy" element={<Proxies />} />
               <Route path="/settings" element={<Settings />} />
               <Route

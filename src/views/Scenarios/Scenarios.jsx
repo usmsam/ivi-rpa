@@ -5,7 +5,11 @@ import { BsFillPlayFill, BsPencilSquare } from "react-icons/bs";
 
 import s from "./scenarios.module.scss";
 import { useEffect } from "react";
-import { getScenariosStats } from "../../shared/api/routes/scenarios";
+import {
+  getScenariosStats,
+  scenarioDisable,
+  scenarioEnable,
+} from "../../shared/api/routes/scenarios";
 
 // const mock_scenarios = [
 //   {
@@ -25,7 +29,10 @@ import { getScenariosStats } from "../../shared/api/routes/scenarios";
 //   },
 // ];
 
-export const Scenarios = ({ onClick = () => {} }) => {
+export const Scenarios = ({
+  onClick = () => {},
+  setEditableScenario = () => {},
+}) => {
   // const [state, setState] = useState([]);
 
   useEffect(() => {
@@ -40,6 +47,17 @@ export const Scenarios = ({ onClick = () => {} }) => {
       console.log(error);
     }
   }, []);
+
+  // const scenarioEnableHandler = async (id) => {
+  //   try {
+  //     await scenarioEnable(id);
+  //   } catch (error) {}
+  // };
+  // const scenarioDisableHandler = async (id) => {
+  //   try {
+  //     await scenarioDisable(id);
+  //   } catch (error) {}
+  // };
 
   return (
     <div className={s.content}>
@@ -116,7 +134,10 @@ export const Scenarios = ({ onClick = () => {} }) => {
                 {/* <Link to={`?edit=${1}`}> */}
                 <BsPencilSquare
                   className={s.BsPencilSquare}
-                  onClick={onClick}
+                  onClick={(e) => {
+                    onClick(e);
+                    // setEditableScenario(id);
+                  }}
                 />
                 {/* </Link> */}
               </td>

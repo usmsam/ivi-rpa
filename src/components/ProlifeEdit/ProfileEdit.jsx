@@ -90,13 +90,6 @@ export const ProfileEdit = ({
     }
   }, [id]);
   const onSubmit = async () => {
-    console.log({
-      name: name,
-      max_quantity: +qty,
-      tags_ids: selectedTags.map((el) => el.value),
-      search_engines_ids: selectedEngines.map((el) => el.value),
-      platforms_ids: selectedPlatforms.map((el) => el.value),
-    });
     try {
       const data = await updateProfile(id, {
         name: name,

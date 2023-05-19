@@ -4,6 +4,9 @@ import { endpoints } from "../endpoints";
 export const getTags = () => {
   return api.get(endpoints.tags);
 };
+export const getUrls = () => {
+  return api.get(endpoints.urls);
+};
 export const getPlatforms = () => {
   return api.get(endpoints.platforms);
 };
