@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, { useEffect, useState } from "react";
-import TimePicker from "react-time-picker";
+// import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { Checkbox } from "../Checkbox/Checkbox";
@@ -19,36 +19,40 @@ export const Editor = ({
   setIsActive = () => {},
   frame_urls = [],
   backlist_urls = [],
+  thumbnails = [],
   id,
 }) => {
   const [name, setName] = useState("");
   const [ttl, setTtl] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
-  const [valueFrom, setValueFrom] = useState("");
-  const [valueTo, setValueTo] = useState("");
+  // const [valueFrom, setValueFrom] = useState("");
+  // const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
   const [backlist, setBacklist] = useState("");
+  const [profiles_ids, setProfilesIds] = useState([]);
   const [clicks, setClicks] = useState(false);
   const [clicks_prob, setClicksProb] = useState("");
   const [clicks_ttl, setClicksTtl] = useState("");
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
+  const profilesRef = useRef(null);
 
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
         const data = await updateScenario(id, {
           name: name,
-          frame_uls: frameUrls.map((el) => el.id),
+          frame_urls: frameUrls.map((el) => el.value) || [],
           ttl: ttl,
           width: width,
           height: height,
-          blacklist: backlist.map((el) => el.id),
+          blacklist: backlist.map((el) => el.value) || [],
           clicks: clicks,
           click_prob: clicks_prob,
           click_ttl: clicks_ttl,
+          profiles_ids: profiles_ids.map((el) => el.value) || [],
         });
         console.log(data);
       };
@@ -64,16 +68,24 @@ export const Editor = ({
         if (id) {
           const { data } = await getScenarioById(id);
           console.log(data);
-          setName(data[0].name);
-          setWidth(data[0].width);
-          setHeight(data[0].height);
-          setTtl(data[0].ttl);
-          frameUrlsRef.current.setValue(
-            data[0].frame_urls.map((el) => ({ value: el.id, label: el.url }))
-          );
-          backlistRef.current.setValue(
-            data[0].blacklist.map((el) => ({ value: el.id, label: el.url }))
-          );
+          if (data) {
+            setName(data[0].name);
+            setWidth(data[0].width);
+            setHeight(data[0].height);
+            setTtl(data[0].ttl);
+            setClicks(data[0].clicks);
+            setClicksProb(data[0].click_prob);
+            setClicksTtl(data[0].click_ttl);
+            frameUrlsRef.current.setValue(
+              data[0].frame_urls.map((el) => ({ value: el.id, label: el.url }))
+            );
+            backlistRef.current.setValue(
+              data[0].blacklist.map((el) => ({ value: el.id, label: el.url }))
+            );
+            profilesRef.current.setValue(
+              data[0].profiles.map((el) => ({ value: el.id, label: el.name }))
+            );
+          }
         }
       };
       getScenariosdt();
@@ -147,7 +159,7 @@ export const Editor = ({
             />
           </>
         )}
-        <div className={s.label}>Work Time</div>
+        {/* <div className={s.label}>Work Time</div>
         <span className={s.label}>From : </span>
         <TimePicker
           onChange={setValueFrom}
@@ -163,9 +175,12 @@ export const Editor = ({
           maxTime="23:59"
           disableClock
           className={s.timepicker}
+        /> */}
+        <MultiSelect
+          ref={profilesRef}
+          options={thumbnails.map((el) => ({ value: el.id, label: el.name }))}
+          onChange={setProfilesIds}
         />
-        <div className={s.label}>Profiles</div>
-        {/* <MultiSelect options={options} /> */}
         <div className={s.editor_bottons}>
           <button
             className={cn(s.editor_bottons, s.default)}

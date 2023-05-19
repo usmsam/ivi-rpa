@@ -70,6 +70,7 @@ function App() {
         backlist_urls={urls2}
         frame_urls={urls1}
         id={editableScenario}
+        thumbnails={thumbnails}
       />
       <ProfileEdit
         isActive={state2}
