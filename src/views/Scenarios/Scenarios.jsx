@@ -7,8 +7,8 @@ import s from "./scenarios.module.scss";
 import { useEffect } from "react";
 import {
   getScenariosStats,
-  scenarioDisable,
-  scenarioEnable,
+  // scenarioDisable,
+  // scenarioEnable,
 } from "../../shared/api/routes/scenarios";
 
 // const mock_scenarios = [
