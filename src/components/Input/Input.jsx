@@ -10,6 +10,9 @@ export const Input = ({
   onChange = () => {},
   placeholder = " ",
   className = "",
+  min = 0,
+  max,
+  step = 1,
 }) => {
   return (
     <div className={cn(s.inputWrapper, className)}>
@@ -20,6 +23,9 @@ export const Input = ({
         onChange={(e) => onChange(e.target.value)}
         value={value}
         className={s.input}
+        min={min}
+        max={max}
+        step={step}
       />
       <span className={s.subtitle}> {subtitle}</span>
     </div>

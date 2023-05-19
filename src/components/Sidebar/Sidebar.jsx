@@ -17,7 +17,7 @@ export const Sidebar = () => {
         <Link to={"/"}>
           <li className={cn(s.linkItem, { [s.active]: pathname === "/" })}>
             <AiFillControl />
-            Управление
+            Сценарии
           </li>
         </Link>
         <Link to={"/profiles"}>

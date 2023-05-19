@@ -1,86 +1,89 @@
 import cn from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Input } from "../Input/Input";
 
-import s from "./editor.module.scss";
+import s from "./createScenario.module.scss";
 import { MultiSelect } from "../MultiSelect/MultiSelect";
 import {
-  getScenarioById,
-  updateScenario,
+  getScenariosStats,
+  postScenarios,
 } from "../../shared/api/routes/scenarios";
 import { useRef } from "react";
-
-export const Editor = ({
+import { useDispatch } from "react-redux";
+import { setScenariosData } from "../../shared/store/slices/scenarios";
+export const CreateScenario = ({
   isActive = false,
   setIsActive = () => {},
   frame_urls = [],
   backlist_urls = [],
-  id,
+  thumbnails = [],
 }) => {
   const [name, setName] = useState("");
   const [ttl, setTtl] = useState("");
-  const [width, setWidth] = useState("");
-  const [height, setHeight] = useState("");
+  const [width, setWidth] = useState(null);
+  const [height, setHeight] = useState(null);
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
-  const [backlist, setBacklist] = useState("");
+  const [backlist, setBacklist] = useState([]);
+  const [profiles_ids, setProfilesIds] = useState([]);
   const [clicks, setClicks] = useState(false);
-  const [clicks_prob, setClicksProb] = useState("");
-  const [clicks_ttl, setClicksTtl] = useState("");
+  const [clicks_prob, setClicksProb] = useState(null);
+  const [clicks_ttl, setClicksTtl] = useState(null);
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
-
+  const profilesRef = useRef(null);
+  const reset = () => {
+    setName("");
+    setTtl("");
+    setWidth("");
+    setHeight("");
+    frameUrlsRef.current.setValue([]);
+    backlistRef.current.setValue([]);
+    profilesRef.current.setValue([]);
+    setClicks(false);
+    setClicksProb("");
+    setClicksTtl("");
+    setValueFrom(null);
+    setValueTo(null);
+  };
+  const dispatch = useDispatch();
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
-        const data = await updateScenario(id, {
+        const { data } = await postScenarios({
           name: name,
-          frame_uls: frameUrls.map((el) => el.id),
           ttl: ttl,
           width: width,
           height: height,
-          blacklist: backlist.map((el) => el.id),
           clicks: clicks,
           click_prob: clicks_prob,
           click_ttl: clicks_ttl,
+          work_timerange_start: valueFrom ? valueFrom.concat(":00") : null,
+          work_timerange_end: valueTo ? valueTo.concat(":00") : null,
+          frame_urls_ids: frameUrls.map((el) => el.value),
+          blacklist_ids: backlist.map((el) => el.value),
+          profiles_ids: profiles_ids.map((el) => el.value),
         });
-        console.log(data);
+        if (data) {
+          reset();
+        }
       };
       getScenariosdt();
+      getScenariosStats().then((res) => dispatch(setScenariosData(res.data)));
+      setName("");
+      setTtl("");
+      setWidth("");
+      setHeight("");
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    try {
-      const getScenariosdt = async () => {
-        if (id) {
-          const { data } = await getScenarioById(id);
-          console.log(data);
-          setName(data[0].name);
-          setWidth(data[0].width);
-          setHeight(data[0].height);
-          setTtl(data[0].ttl);
-          frameUrlsRef.current.setValue(
-            data[0].frame_urls.map((el) => ({ value: el.id, label: el.url }))
-          );
-          backlistRef.current.setValue(
-            data[0].blacklist.map((el) => ({ value: el.id, label: el.url }))
-          );
-        }
-      };
-      getScenariosdt();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [id]);
 
   return (
     <div
@@ -88,7 +91,7 @@ export const Editor = ({
       onClick={() => setIsActive(!isActive)}
     >
       <div className={s.editorWrapper} onClick={(e) => e.stopPropagation()}>
-        <div className={s.title}>Scenario Editor</div>
+        <div className={s.title}>Create Scenario</div>
         <Input
           label="Scenario Name:"
           subtitle="Enter scenario name."
@@ -115,12 +118,14 @@ export const Editor = ({
           placeholder="Enter width"
           value={width}
           onChange={setWidth}
+          type="number"
         />
         <Input
           label="Height:"
           placeholder="Enter height"
           value={height}
           onChange={setHeight}
+          type="number"
         />
         <div className={s.label}>Backlist:</div>
         <MultiSelect
@@ -136,7 +141,16 @@ export const Editor = ({
               subtitle="Enter click probability"
               placeholder="Enter click probability as s decimal between 0 and 1."
               value={clicks_prob}
-              onChange={setClicksProb}
+              onChange={(e) => {
+                setClicksProb(e);
+                if (Number(e) > 1) {
+                  setClicksProb(1);
+                }
+              }}
+              type="number"
+              min={0}
+              max={1}
+              step={0.1}
             />
             <Input
               label="Time to Live After Click (sec):"
@@ -144,6 +158,7 @@ export const Editor = ({
               placeholder="Enter time to live after click in seconds."
               value={clicks_ttl}
               onChange={setClicksTtl}
+              type="number"
             />
           </>
         )}
@@ -155,6 +170,7 @@ export const Editor = ({
           maxTime="23:59"
           disableClock
           className={s.timepicker}
+          required
         />{" "}
         <span className={s.label}>To : </span>
         <TimePicker
@@ -163,9 +179,14 @@ export const Editor = ({
           maxTime="23:59"
           disableClock
           className={s.timepicker}
+          required
         />
         <div className={s.label}>Profiles</div>
-        {/* <MultiSelect options={options} /> */}
+        <MultiSelect
+          ref={profilesRef}
+          options={thumbnails.map((el) => ({ value: el.id, label: el.name }))}
+          onChange={setProfilesIds}
+        />
         <div className={s.editor_bottons}>
           <button
             className={cn(s.editor_bottons, s.default)}
@@ -173,7 +194,9 @@ export const Editor = ({
           >
             Save
           </button>
-          <button className={cn(s.editor_bottons, s.dashed)}>Reset</button>
+          <button className={cn(s.editor_bottons, s.dashed)} onClick={reset}>
+            Reset
+          </button>
         </div>
       </div>
     </div>
