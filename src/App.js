@@ -1,10 +1,5 @@
 import s from "./App.module.scss";
-import {
-  redirect,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
@@ -63,10 +58,7 @@ function App() {
   }, []);
 
   const { pathname } = useLocation();
-  useEffect(() => {
-    redirect(pathname);
-    console.log(pathname);
-  }, [pathname]);
+
   return (
     <>
       <Editor
@@ -113,8 +105,30 @@ function App() {
               <span className={s.name}>Сотрудник #1</span>
             </div>
           </div>
-
-          <Routes>
+          {pathname === "/" ? (
+            <Scenarios
+              onClick={setstate}
+              setEditableScenario={setEditableScenario}
+              createScenarioHandler={setstate4}
+            />
+          ) : pathname === "/proxy" ? (
+            <Proxies />
+          ) : pathname === "/settings" ? (
+            <Settings />
+          ) : pathname === "/profiles" ? (
+            <Profiles
+              onClick={setstate2}
+              createHandler={setstate3}
+              setEditableProfile={setEditableProfile}
+            />
+          ) : (
+            <Scenarios
+              onClick={setstate}
+              setEditableScenario={setEditableScenario}
+              createScenarioHandler={setstate4}
+            />
+          )}
+          {/* <Routes>
             <Route
               path="/"
               element={
@@ -147,7 +161,7 @@ function App() {
                 />
               }
             />
-          </Routes>
+          </Routes> */}
         </main>
       </div>
     </>
