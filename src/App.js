@@ -1,9 +1,9 @@
 import s from "./App.module.scss";
 import {
-  BrowserRouter as Router,
+  redirect,
   Route,
   Routes,
-  // HashRouter,
+  useLocation,
 } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 
@@ -62,8 +62,13 @@ function App() {
     }
   }, []);
 
+  const { pathname } = useLocation();
+  useEffect(() => {
+    redirect(pathname);
+    console.log(pathname);
+  }, [pathname]);
   return (
-    <Router>
+    <>
       <Editor
         isActive={state}
         setIsActive={setstate}
@@ -132,10 +137,20 @@ function App() {
                 />
               }
             />
+            <Route
+              path="*"
+              element={
+                <Scenarios
+                  onClick={setstate}
+                  setEditableScenario={setEditableScenario}
+                  createScenarioHandler={setstate4}
+                />
+              }
+            />
           </Routes>
         </main>
       </div>
-    </Router>
+    </>
   );
 }
 

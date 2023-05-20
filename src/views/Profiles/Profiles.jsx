@@ -16,8 +16,7 @@ export const Profiles = ({
   let { profiles } = useSelector((state) => state.profiles);
 
   const deleteProfile = async (id) => {
-    const { data } = await profileDelete(id);
-    console.log(data);
+    await profileDelete(id);
     getProfiles().then((res) => dispatch(setProfiles(res.data)));
   };
 
@@ -28,9 +27,7 @@ export const Profiles = ({
         dispatch(setProfiles(data));
       };
       getScenariosdt();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [dispatch]);
 
   return (
