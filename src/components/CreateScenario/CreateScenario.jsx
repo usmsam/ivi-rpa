@@ -57,23 +57,6 @@ export const CreateScenario = ({
   };
   const dispatch = useDispatch();
   const onSubmit = () => {
-    console.log("Данные отправки(сценарий)", {
-      name: name,
-      page_url: pageUrl,
-      ttl: +ttl,
-      width: +width,
-      height: +height,
-      clicks: clicks,
-      click_prob: +clicks_prob,
-      click_ttl: +clicks_ttl,
-      work_timerange_start: valueFrom ? valueFrom.concat(":00") : null,
-      work_timerange_end: valueTo ? valueTo.concat(":00") : null,
-      frame_urls_ids: frameUrls.map((el) => el.value),
-      blacklist_ids: backlist.map((el) => el.value),
-      profiles_ids: profiles_ids.map((el) => el.value),
-      inject_script: jsScript,
-      scroll_amount: +scroll,
-    });
     try {
       const getScenariosdt = async () => {
         const { data } = await postScenarios({
@@ -93,11 +76,9 @@ export const CreateScenario = ({
           inject_script: jsScript,
           scroll_amount: +scroll,
         });
-
-        console.log(data);
-        // if (data) {
-        //   reset();
-        // }
+        if (data) {
+          reset();
+        }
       };
       getScenariosdt();
       getScenariosStats().then((res) => dispatch(setScenariosData(res.data)));
