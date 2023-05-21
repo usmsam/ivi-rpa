@@ -44,7 +44,6 @@ export const Scenarios = ({
     try {
       const getScenariosdt = async () => {
         const { data } = await getScenariosStats();
-        console.log(data);
         if (data) {
           dispatch(setScenariosData(data));
         }

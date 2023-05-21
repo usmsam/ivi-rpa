@@ -15,6 +15,7 @@ import {
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setScenariosData } from "../../shared/store/slices/scenarios";
+import { DatePicker } from "../DatePicker/DatePicker";
 export const CreateScenario = ({
   isActive = false,
   setIsActive = () => {},
@@ -25,18 +26,19 @@ export const CreateScenario = ({
   const [name, setName] = useState("");
   const [pageUrl, setPageUrl] = useState("");
   const [ttl, setTtl] = useState("");
-  const [width, setWidth] = useState(null);
-  const [height, setHeight] = useState(null);
-  const [jsScript, setJsScript] = useState(null);
-  const [scroll, setScroll] = useState(null);
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const [jsScript, setJsScript] = useState("");
+  const [scroll, setScroll] = useState("");
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
   const [backlist, setBacklist] = useState([]);
   const [profiles_ids, setProfilesIds] = useState([]);
   const [clicks, setClicks] = useState(false);
-  const [clicks_prob, setClicksProb] = useState(null);
-  const [clicks_ttl, setClicksTtl] = useState(null);
+  const [clicks_prob, setClicksProb] = useState("");
+  const [clicks_ttl, setClicksTtl] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
@@ -77,11 +79,13 @@ export const CreateScenario = ({
           scroll_amount: +scroll,
         });
         if (data) {
+          getScenariosStats().then((res) =>
+            dispatch(setScenariosData(res.data))
+          );
           reset();
         }
       };
       getScenariosdt();
-      getScenariosStats().then((res) => dispatch(setScenariosData(res.data)));
     } catch (error) {
       console.log(error);
     }
@@ -185,25 +189,33 @@ export const CreateScenario = ({
             />
           </>
         )}
-        <div className={s.label}>Work Time</div>
-        <span className={s.label}>From : </span>
-        <TimePicker
-          onChange={setValueFrom}
-          value={valueFrom}
-          maxTime="23:59"
-          disableClock
-          className={s.timepicker}
-          required
-        />{" "}
-        <span className={s.label}>To : </span>
-        <TimePicker
-          onChange={setValueTo}
-          value={valueTo}
-          maxTime="23:59"
-          disableClock
-          className={s.timepicker}
-          required
-        />
+        <div className={s.pickers}>
+          <div>
+            <div className={s.label}>Work Time</div>
+            <span className={s.label}>From : </span>
+            <TimePicker
+              onChange={setValueFrom}
+              value={valueFrom}
+              maxTime="23:59"
+              disableClock
+              className={s.timepicker}
+              required
+            />{" "}
+            <span className={s.label}>To : </span>
+            <TimePicker
+              onChange={setValueTo}
+              value={valueTo}
+              maxTime="23:59"
+              disableClock
+              className={s.timepicker}
+              required
+            />
+          </div>
+          <div>
+            <p className={s.label}>Сampaign lifetime</p>
+            <DatePicker startDate={startDate} setStartDate={setStartDate} />
+          </div>
+        </div>
         <div className={s.label}>Profiles</div>
         <MultiSelect
           ref={profilesRef}

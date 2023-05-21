@@ -13,6 +13,7 @@ import {
   updateScenario,
 } from "../../shared/api/routes/scenarios";
 import { useRef } from "react";
+import { DatePicker } from "../DatePicker/DatePicker";
 
 export const Editor = ({
   isActive = false,
@@ -23,11 +24,12 @@ export const Editor = ({
   id,
 }) => {
   const [name, setName] = useState("");
+  const [pageUrl, setPageUrl] = useState("");
   const [ttl, setTtl] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
-  const [jsScript, setJsScript] = useState(null);
-  const [scroll, setScroll] = useState(null);
+  const [jsScript, setJsScript] = useState("");
+  const [scroll, setScroll] = useState("");
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
@@ -36,6 +38,7 @@ export const Editor = ({
   const [clicks, setClicks] = useState(false);
   const [clicks_prob, setClicksProb] = useState("");
   const [clicks_ttl, setClicksTtl] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
@@ -44,8 +47,9 @@ export const Editor = ({
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
-        const data = await updateScenario(id, {
+        await updateScenario(id, {
           name: name,
+          page_url: pageUrl,
           frame_urls: frameUrls.map((el) => el.value) || [],
           ttl: ttl,
           width: width,
@@ -58,7 +62,6 @@ export const Editor = ({
           inject_script: jsScript,
           scroll_amount: scroll,
         });
-        console.log(data);
       };
       getScenariosdt();
     } catch (error) {
@@ -71,9 +74,9 @@ export const Editor = ({
       const getScenariosdt = async () => {
         if (id) {
           const { data } = await getScenarioById(id);
-          console.log(data);
           if (data) {
             setName(data[0].name);
+            setPageUrl(data[0].page_url);
             setWidth(data[0].width);
             setHeight(data[0].height);
             setTtl(data[0].ttl);
@@ -115,6 +118,13 @@ export const Editor = ({
           placeholder="Enter name"
           value={name}
           onChange={setName}
+        />
+        <Input
+          label="Page url:"
+          subtitle="Enter page url."
+          placeholder="Enter page url"
+          value={pageUrl}
+          onChange={setPageUrl}
         />
         <div className={s.label}>Frame URLs:</div>
         <MultiSelect
@@ -181,23 +191,33 @@ export const Editor = ({
             />
           </>
         )}
-        <div className={s.label}>Сampaign lifetime</div>
-        <span className={s.label}>From : </span>
-        <TimePicker
-          onChange={setValueFrom}
-          value={valueFrom}
-          maxTime="23:59"
-          disableClock
-          className={s.timepicker}
-        />{" "}
-        <span className={s.label}>To : </span>
-        <TimePicker
-          onChange={setValueTo}
-          value={valueTo}
-          maxTime="23:59"
-          disableClock
-          className={s.timepicker}
-        />
+        <div className={s.pickers}>
+          <div>
+            <div className={s.label}>Work Time</div>
+            <span className={s.label}>From : </span>
+            <TimePicker
+              onChange={setValueFrom}
+              value={valueFrom}
+              maxTime="23:59"
+              disableClock
+              className={s.timepicker}
+              required
+            />{" "}
+            <span className={s.label}>To : </span>
+            <TimePicker
+              onChange={setValueTo}
+              value={valueTo}
+              maxTime="23:59"
+              disableClock
+              className={s.timepicker}
+              required
+            />
+          </div>
+          <div>
+            <p className={s.label}>Сampaign lifetime</p>
+            <DatePicker startDate={startDate} setStartDate={setStartDate} />
+          </div>
+        </div>
         <div className={s.label}>Tags</div>
         <MultiSelect
           ref={profilesRef}

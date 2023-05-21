@@ -16,11 +16,10 @@ import s from "./proxies.module.scss";
 
 export const Proxies = () => {
   const [state, setState] = useState([]);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState("");
   const ref = useRef(null);
   const deleteProxie = async (id) => {
-    const { data } = await proxieDelete(id);
-    console.log(data);
+    await proxieDelete(id);
     getProxies().then((res) => setState(res.data));
   };
 
@@ -28,7 +27,6 @@ export const Proxies = () => {
     try {
       const getScenariosdt = async () => {
         const { data } = await getProxies();
-        console.log(data);
         setState(data);
       };
       getScenariosdt();
@@ -72,7 +70,7 @@ export const Proxies = () => {
             }
           }}
         >
-          <form method="post" enctype="multipart/form-data" action="">
+          <form method="post" encType="multipart/form-data" action="">
             <input
               type="file"
               name="scenario"

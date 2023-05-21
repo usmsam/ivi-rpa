@@ -70,7 +70,6 @@ export const ProfileEdit = ({
       const getScenariosdt = async () => {
         if (id) {
           const { data } = await getProfileByid(id);
-          console.log(data);
           setName(data[0].name);
           setQty(data[0].max_quantity);
           tagsRef.current.setValue(

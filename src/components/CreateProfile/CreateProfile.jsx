@@ -72,11 +72,9 @@ export const CreateProfile = ({
     selectRef.current.clearValue();
     selectRef2.current.clearValue();
     selectRef3.current.clearValue();
-    // console.log();
   };
 
   const onSubmit = () => {
-    console.log(DataContent);
     if (DataContent.name === "") {
       alert("name");
       return;
@@ -88,9 +86,7 @@ export const CreateProfile = ({
 
     try {
       const getScenariosdt = async () => {
-        console.log(DataContent);
         const data = await postProfiles(DataContent);
-        console.log(data);
         if (data.status === 200) {
           clear();
           getProfiles().then((res) => dispatch(setProfiles(res.data)));
