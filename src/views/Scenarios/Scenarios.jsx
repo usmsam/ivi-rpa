@@ -141,10 +141,10 @@ export const Scenarios = ({
                         <td>{requests_qty}</td>
                         <td>{responses_qty}</td>
                         <td>{shows_qty}</td>
-                        <td>{fill_rate}</td>
-                        <td>{show_rate}</td>
+                        <td>{fill_rate}%</td>
+                        <td>{show_rate}%</td>
                         <td>{clicks_qty}</td>
-                        <td>{ctr}</td>
+                        <td>{ctr}%</td>
                         <td>
                           {/* <Link to={`?edit=${1}`}> */}
                           <BsPencilSquare

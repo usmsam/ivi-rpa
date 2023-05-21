@@ -14,13 +14,16 @@ export const CreateProfile = ({
   tags = [],
   platforms = [],
   engines = [],
+  browsers = [],
 }) => {
-  const [selectedTags, setSelectedTags] = useState([{ value: 1, label: "dd" }]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [selectedEngines, setSelectedEngines] = useState([]);
+  const [selectedBrowsers, setSelectedBrowsers] = useState([]);
   const selectRef = useRef(null);
   const selectRef2 = useRef(null);
   const selectRef3 = useRef(null);
+  const selectRef4 = useRef(null);
 
   const [tagsItems, setTags] = useState([]);
   const [platfomsItems, setPlatforms] = useState([]);
@@ -34,6 +37,7 @@ export const CreateProfile = ({
     tags_ids: [],
     search_engines_ids: [],
     platforms_ids: [],
+    browser: "",
   });
 
   useEffect(() => {
@@ -72,17 +76,19 @@ export const CreateProfile = ({
   };
 
   const onSubmit = () => {
+    console.log(DataContent);
     if (DataContent.name === "") {
       alert("name");
       return;
     }
     if (DataContent.max_quantity === 0) {
-      alert("name");
+      alert("quantity");
       return;
     }
 
     try {
       const getScenariosdt = async () => {
+        console.log(DataContent);
         const data = await postProfiles(DataContent);
         console.log(data);
         if (data.status === 200) {
@@ -109,7 +115,11 @@ export const CreateProfile = ({
       ...e,
       search_engines_ids: selectedEngines.map((el) => el.value),
     }));
-  }, [selectedTags, selectedPlatforms, selectedEngines]);
+    setDataContent((e) => ({
+      ...e,
+      browser: selectedBrowsers.label,
+    }));
+  }, [selectedTags, selectedPlatforms, selectedEngines, selectedBrowsers]);
 
   return (
     <div
@@ -154,6 +164,13 @@ export const CreateProfile = ({
           options={enginesItems}
           onChange={setSelectedEngines}
           ref={selectRef3}
+        />
+        <div className={s.label}>Browsers</div>
+        <MultiSelect
+          options={browsers.map((el) => ({ value: el, label: el }))}
+          onChange={setSelectedBrowsers}
+          ref={selectRef4}
+          isMulti={false}
         />
 
         <div className={s.editor_bottons}>

@@ -17,4 +17,6 @@ export const endpoints = {
   proxieDelete: (id) => `/proxy/${id}`,
   scenarioEnable: (id) => `/scenario/${id}/enable`,
   scenarioDisable: (id) => `/scenario/${id}/disable`,
+  uploadProxy: "/proxies/files",
+  browsers: "/browsers",
 };

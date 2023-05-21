@@ -22,6 +22,7 @@ export const ProfileEdit = ({
   tags = [],
   platforms = [],
   engines = [],
+  browsers = [],
   id,
 }) => {
   const [name, setName] = useState("");
@@ -30,6 +31,7 @@ export const ProfileEdit = ({
   const [selectedTags, setSelectedTags] = useState(false);
   const [selectedPlatforms, setSelectedPlatforms] = useState(false);
   const [selectedEngines, setSelectedEngines] = useState(false);
+  const [selectedBrowsers, setSelectedBrowsers] = useState([]);
 
   const [tagsItems, setTags] = useState([]);
   const [platfomsItems, setPlatforms] = useState([]);
@@ -38,6 +40,7 @@ export const ProfileEdit = ({
   const tagsRef = useRef(null);
   const platformsRef = useRef(null);
   const enginesRef = useRef(null);
+  const selectRef4 = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -82,6 +85,9 @@ export const ProfileEdit = ({
               label: el.link,
             }))
           );
+          selectRef4.current.setValue([
+            { value: data[0].browser, label: data[0].browser },
+          ]);
         }
       };
       getScenariosdt();
@@ -97,6 +103,7 @@ export const ProfileEdit = ({
         tags_ids: selectedTags.map((el) => el.value),
         search_engines_ids: selectedEngines.map((el) => el.value),
         platforms_ids: selectedPlatforms.map((el) => el.value),
+        browser: selectedBrowsers.label,
       });
       if (data.status === 200) {
         setIsActive(false);
@@ -143,6 +150,13 @@ export const ProfileEdit = ({
           options={enginesItems}
           onChange={setSelectedEngines}
           ref={enginesRef}
+        />
+        <div className={s.label}>Browsers</div>
+        <MultiSelect
+          options={browsers.map((el) => ({ value: el, label: el }))}
+          onChange={setSelectedBrowsers}
+          ref={selectRef4}
+          isMulti={false}
         />
 
         <div className={s.editor_bottons}>

@@ -1,5 +1,5 @@
 import s from "./App.module.scss";
-import {  useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
@@ -13,6 +13,7 @@ import { Profiles } from "./views/Profiles/Profiles";
 import { ProfileEdit } from "./components/ProlifeEdit/ProfileEdit";
 import {
   getBlacklistUrls,
+  getBrowsers,
   getEngines,
   getFrameUrls,
   getPlatforms,
@@ -29,6 +30,7 @@ function App() {
   const [tags, settags] = useState([]);
   const [urls1, setUrls1] = useState([]);
   const [urls2, setUrls2] = useState([]);
+  const [browsers, setBrowsers] = useState([]);
   const [thumbnails, setThumbnails] = useState([]);
   const [platforms, setplatforms] = useState([]);
   const [engines, setengines] = useState([]);
@@ -44,12 +46,14 @@ function App() {
         const { data: urls1 } = await getFrameUrls();
         const { data: urls2 } = await getBlacklistUrls();
         const { data: thumbnails } = await getProfilesThumbnails();
+        const { data: browsers } = await getBrowsers();
         settags(tags);
         setUrls1(urls1);
         setUrls2(urls2);
         setThumbnails(thumbnails);
         setplatforms(platforms);
         setengines(engines);
+        setBrowsers(browsers);
       };
       getScenariosdt();
     } catch (error) {
@@ -76,6 +80,7 @@ function App() {
         engines={engines}
         platforms={platforms}
         id={editableProfile}
+        browsers={browsers}
       />
       <CreateProfile
         isActive={state3}
@@ -83,6 +88,7 @@ function App() {
         tags={tags}
         engines={engines}
         platforms={platforms}
+        browsers={browsers}
       />
       <CreateScenario
         isActive={state4}

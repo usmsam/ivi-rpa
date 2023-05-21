@@ -4,13 +4,13 @@ import Select from "react-select";
 import s from "./multiSelect.module.scss";
 // const animatedComponents = makeAnimated();
 export const MultiSelect = forwardRef(
-  ({ options = [], onChange = () => {} }, ref) => {
+  ({ options = [], onChange = () => {}, isMulti = true }, ref) => {
     return (
       <>
         <Select
           // closeMenuOnSelect={false}
           // components={animatedComponents}
-          isMulti
+          isMulti={isMulti}
           options={options}
           className={s.select}
           onChange={onChange}
@@ -33,6 +33,12 @@ export const MultiSelect = forwardRef(
               return {
                 ...styles,
                 boxShadow: "none",
+              };
+            },
+            singleValue: (styles, { data }) => {
+              return {
+                ...styles,
+                color: "#fff",
               };
             },
           }}

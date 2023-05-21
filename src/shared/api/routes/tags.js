@@ -1,4 +1,4 @@
-import api from "..";
+import { api } from "../index";
 import { endpoints } from "../endpoints";
 
 export const getTags = () => {
@@ -18,4 +18,7 @@ export const getEngines = () => {
 };
 export const getProfilesThumbnails = () => {
   return api.get(endpoints.profiles_thumbnails);
+};
+export const getBrowsers = () => {
+  return api.get(endpoints.browsers);
 };

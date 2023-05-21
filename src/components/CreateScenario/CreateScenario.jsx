@@ -23,9 +23,12 @@ export const CreateScenario = ({
   thumbnails = [],
 }) => {
   const [name, setName] = useState("");
+  const [pageUrl, setPageUrl] = useState("");
   const [ttl, setTtl] = useState("");
   const [width, setWidth] = useState(null);
   const [height, setHeight] = useState(null);
+  const [jsScript, setJsScript] = useState(null);
+  const [scroll, setScroll] = useState(null);
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
@@ -54,32 +57,50 @@ export const CreateScenario = ({
   };
   const dispatch = useDispatch();
   const onSubmit = () => {
+    console.log("Данные отправки(сценарий)", {
+      name: name,
+      page_url: pageUrl,
+      ttl: +ttl,
+      width: +width,
+      height: +height,
+      clicks: clicks,
+      click_prob: +clicks_prob,
+      click_ttl: +clicks_ttl,
+      work_timerange_start: valueFrom ? valueFrom.concat(":00") : null,
+      work_timerange_end: valueTo ? valueTo.concat(":00") : null,
+      frame_urls_ids: frameUrls.map((el) => el.value),
+      blacklist_ids: backlist.map((el) => el.value),
+      profiles_ids: profiles_ids.map((el) => el.value),
+      inject_script: jsScript,
+      scroll_amount: +scroll,
+    });
     try {
       const getScenariosdt = async () => {
         const { data } = await postScenarios({
           name: name,
-          ttl: ttl,
-          width: width,
-          height: height,
+          page_url: pageUrl,
+          ttl: +ttl,
+          width: +width,
+          height: +height,
           clicks: clicks,
-          click_prob: clicks_prob,
-          click_ttl: clicks_ttl,
+          click_prob: +clicks_prob,
+          click_ttl: +clicks_ttl,
           work_timerange_start: valueFrom ? valueFrom.concat(":00") : null,
           work_timerange_end: valueTo ? valueTo.concat(":00") : null,
           frame_urls_ids: frameUrls.map((el) => el.value),
           blacklist_ids: backlist.map((el) => el.value),
           profiles_ids: profiles_ids.map((el) => el.value),
+          inject_script: jsScript,
+          scroll_amount: +scroll,
         });
-        if (data) {
-          reset();
-        }
+
+        console.log(data);
+        // if (data) {
+        //   reset();
+        // }
       };
       getScenariosdt();
       getScenariosStats().then((res) => dispatch(setScenariosData(res.data)));
-      setName("");
-      setTtl("");
-      setWidth("");
-      setHeight("");
     } catch (error) {
       console.log(error);
     }
@@ -98,6 +119,13 @@ export const CreateScenario = ({
           placeholder="Enter name"
           value={name}
           onChange={setName}
+        />
+        <Input
+          label="Page url:"
+          subtitle="Enter page url."
+          placeholder="Enter page url"
+          value={pageUrl}
+          onChange={setPageUrl}
         />
         <div className={s.label}>Frame URLs:</div>
         <MultiSelect
@@ -127,7 +155,21 @@ export const CreateScenario = ({
           onChange={setHeight}
           type="number"
         />
-        <div className={s.label}>Backlist:</div>
+        <Input
+          label="JS script:"
+          placeholder="Enter script"
+          value={jsScript}
+          onChange={setJsScript}
+          type="text"
+        />
+        <Input
+          label="Scroll :"
+          placeholder="Enter scroll"
+          value={scroll}
+          onChange={setScroll}
+          type="number"
+        />
+        <div className={s.label}>Blacklist:</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}

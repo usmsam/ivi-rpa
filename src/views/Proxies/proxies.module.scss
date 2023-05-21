@@ -69,6 +69,10 @@
     color: #fff;
     cursor: pointer;
 
+    >input {
+        display: none;
+    }
+
     &:hover {
         background: #D90B6B20;
     }

@@ -168,28 +168,31 @@
     margin-bottom: 7px;
 }
 
-button {
-    background: #413F59;
-    border: 2px solid rgba(217, 11, 107, 0.5);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 7px;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 20px;
-    /* identical to box height */
 
-    font-family: 'Roboto', serif;
-    color: #FFFFFF;
-    padding: 15px 44px;
-    cursor: pointer;
+.content {
+    padding-left: 20px;
 
-    &:hover {
-        background-color: #D90B6B20;
+    button {
+        background: #413F59;
+        border: 2px solid rgba(217, 11, 107, 0.5);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 7px;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 20px;
+        /* identical to box height */
+
+        font-family: 'Roboto', serif;
+        color: #FFFFFF;
+        padding: 15px 44px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #D90B6B20;
+        }
     }
 }
-.content{
-    padding-left: 20px;
-}
-.input{
+
+.input {
     max-width: 170px;
 }

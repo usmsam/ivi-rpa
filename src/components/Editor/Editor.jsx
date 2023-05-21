@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, { useEffect, useState } from "react";
-// import TimePicker from "react-time-picker";
+import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { Checkbox } from "../Checkbox/Checkbox";
@@ -26,8 +26,10 @@ export const Editor = ({
   const [ttl, setTtl] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
-  // const [valueFrom, setValueFrom] = useState("");
-  // const [valueTo, setValueTo] = useState("");
+  const [jsScript, setJsScript] = useState(null);
+  const [scroll, setScroll] = useState(null);
+  const [valueFrom, setValueFrom] = useState("");
+  const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
   const [backlist, setBacklist] = useState("");
   const [profiles_ids, setProfilesIds] = useState([]);
@@ -53,6 +55,8 @@ export const Editor = ({
           click_prob: clicks_prob,
           click_ttl: clicks_ttl,
           profiles_ids: profiles_ids.map((el) => el.value) || [],
+          inject_script: jsScript,
+          scroll_amount: scroll,
         });
         console.log(data);
       };
@@ -76,6 +80,10 @@ export const Editor = ({
             setClicks(data[0].clicks);
             setClicksProb(data[0].click_prob);
             setClicksTtl(data[0].click_ttl);
+            setJsScript(data[0].inject_script);
+            setScroll(data[0].scroll_amount);
+            setValueTo(data[0].work_timerange_end.slice(0, 4));
+            setValueFrom(data[0].work_timerange_start.slice(0, 4));
             frameUrlsRef.current.setValue(
               data[0].frame_urls.map((el) => ({ value: el.id, label: el.url }))
             );
@@ -134,7 +142,21 @@ export const Editor = ({
           value={height}
           onChange={setHeight}
         />
-        <div className={s.label}>Backlist:</div>
+        <Input
+          label="JS script:"
+          placeholder="Enter script"
+          value={jsScript}
+          onChange={setJsScript}
+          type="text"
+        />
+        <Input
+          label="Scroll :"
+          placeholder="Enter scroll"
+          value={scroll}
+          onChange={setScroll}
+          type="number"
+        />
+        <div className={s.label}>Blacklist:</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}
@@ -159,7 +181,7 @@ export const Editor = ({
             />
           </>
         )}
-        {/* <div className={s.label}>Work Time</div>
+        <div className={s.label}>Сampaign lifetime</div>
         <span className={s.label}>From : </span>
         <TimePicker
           onChange={setValueFrom}
@@ -175,7 +197,8 @@ export const Editor = ({
           maxTime="23:59"
           disableClock
           className={s.timepicker}
-        /> */}
+        />
+        <div className={s.label}>Tags</div>
         <MultiSelect
           ref={profilesRef}
           options={thumbnails.map((el) => ({ value: el.id, label: el.name }))}
