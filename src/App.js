@@ -22,6 +22,9 @@ import {
 } from "./shared/api/routes/tags";
 import { CreateScenario } from "./components/CreateScenario/CreateScenario";
 
+import { useDispatch } from "react-redux";
+import { setAllFrameUrls } from "./shared/store/slices/frameUrl";
+
 function App() {
   const [state, setstate] = useState(false);
   const [state2, setstate2] = useState(false);
@@ -37,6 +40,7 @@ function App() {
   const [editableProfile, setEditableProfile] = useState(0);
   const [editableScenario, setEditableScenario] = useState(0);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     try {
       const getScenariosdt = async () => {
@@ -54,6 +58,8 @@ function App() {
         setplatforms(platforms);
         setengines(engines);
         setBrowsers(browsers);
+
+        dispatch(setAllFrameUrls(urls1));
       };
       getScenariosdt();
     } catch (error) {

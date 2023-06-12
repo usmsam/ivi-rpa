@@ -10,6 +10,8 @@ export const MultiSelect = forwardRef(
       onChange = () => {},
       isMulti = true,
       onInputChange = () => {},
+      inputValue = "",
+      menuIsOpen,
     },
     ref
   ) => {
@@ -17,6 +19,8 @@ export const MultiSelect = forwardRef(
       <>
         <Select
           isMulti={isMulti}
+          isClearable={false}
+          menuIsOpen={menuIsOpen}
           options={options}
           className={s.select}
           onChange={onChange}
@@ -33,7 +37,7 @@ export const MultiSelect = forwardRef(
               return {
                 ...styles,
                 background: "#4C4A66",
-                height: 42,
+                minHeight: 42,
               };
             },
             control: (styles, { data }) => {

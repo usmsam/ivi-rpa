@@ -7,6 +7,9 @@ export const getTags = () => {
 export const getFrameUrls = () => {
   return api.get(endpoints.frame_urls);
 };
+export const postFrameUrls = (data) => {
+  return api.post(endpoints.frame_urls, data);
+};
 export const getBlacklistUrls = () => {
   return api.get(endpoints.blacklist_urls);
 };

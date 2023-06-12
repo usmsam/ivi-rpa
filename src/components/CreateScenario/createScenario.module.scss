@@ -109,3 +109,22 @@
 .label {
     margin-right: 10px;
 }
+
+.frameUrlSelect {
+    display: flex;
+    width: 100%;
+}
+
+.sendButton {
+    margin-bottom: 15px;
+    border: 1px solid #F90175;
+    border-radius: 5px;
+    background: #4C4A66;
+    color: #fff;
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 0 10px;
+    &:hover {
+        background-color: #4C4A6650
+    }
+}

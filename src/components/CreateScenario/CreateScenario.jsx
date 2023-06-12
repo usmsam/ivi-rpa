@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
@@ -13,9 +13,12 @@ import {
   postScenarios,
 } from "../../shared/api/routes/scenarios";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setScenariosData } from "../../shared/store/slices/scenarios";
 import { DatePicker } from "../DatePicker/DatePicker";
+import { postFrameUrls } from "../../shared/api/routes/tags";
+import { setFrameUrl } from "../../shared/store/slices/frameUrl";
+
 export const CreateScenario = ({
   isActive = false,
   setIsActive = () => {},
@@ -44,6 +47,9 @@ export const CreateScenario = ({
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
   const profilesRef = useRef(null);
+
+  const [newFrameUrl, setNewFrameUrl] = useState("");
+
   const reset = () => {
     setName("");
     setTtl("");
@@ -59,6 +65,7 @@ export const CreateScenario = ({
     setValueTo(null);
   };
   const dispatch = useDispatch();
+  let state = useSelector((state) => state.frameUrl);
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
@@ -92,7 +99,17 @@ export const CreateScenario = ({
       console.log(error);
     }
   };
+  const createFrameUrl = async (url) => {
+    try {
+      if (url === "") return;
+      const data = await postFrameUrls({ url: url });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const [menuIsOpen, setMenuIsOpen] = useState();
   return (
     <div
       className={cn(s.editor, { [s.active]: isActive })}
@@ -108,12 +125,41 @@ export const CreateScenario = ({
           onChange={setName}
         />
         <div className={s.label}>Frame URLs:</div>
-        <MultiSelect
-          options={frame_urls.map((el) => ({ value: el.id, label: el.url }))}
-          ref={frameUrlsRef}
-          onChange={setFrameUrls}
-          onInputChange={(e) => console.log(e)}
-        />
+        <div className={s.frameUrlSelect}>
+          <MultiSelect
+            options={state.allFrameUrls.map((el) => ({
+              value: el.id,
+              label: el.url,
+            }))}
+            ref={frameUrlsRef}
+            onChange={setFrameUrls}
+            inputValue={state.url}
+            onInputChange={(inputValue, { action, prevInputValue }) => {
+              if (action === "input-change") {
+                dispatch(setFrameUrl(inputValue));
+                return inputValue;
+              }
+              if (action === "menu-close") {
+                if (prevInputValue) setMenuIsOpen(true);
+                else setMenuIsOpen(undefined);
+              }
+              dispatch(setFrameUrl(prevInputValue));
+              return prevInputValue;
+            }}
+            menuIsOpen={menuIsOpen}
+          />
+          {state.url !== "" ? (
+            <button
+              className={s.sendButton}
+              onClick={() => {
+                createFrameUrl(state.url);
+                dispatch(setFrameUrl(""));
+              }}
+            >
+              Send
+            </button>
+          ) : null}
+        </div>
         <Input
           label="Time to Live (sec):"
           // subtitle="Enter TTL"
