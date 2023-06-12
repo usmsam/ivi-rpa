@@ -24,7 +24,6 @@ export const CreateScenario = ({
   thumbnails = [],
 }) => {
   const [name, setName] = useState("");
-  const [pageUrl, setPageUrl] = useState("");
   const [ttl, setTtl] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
@@ -39,6 +38,8 @@ export const CreateScenario = ({
   const [clicks_prob, setClicksProb] = useState("");
   const [clicks_ttl, setClicksTtl] = useState("");
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [maxCount, setMaxCount] = useState("");
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
@@ -63,7 +64,6 @@ export const CreateScenario = ({
       const getScenariosdt = async () => {
         const { data } = await postScenarios({
           name: name,
-          page_url: pageUrl,
           ttl: +ttl,
           width: +width,
           height: +height,
@@ -77,6 +77,8 @@ export const CreateScenario = ({
           profiles_ids: profiles_ids.map((el) => el.value),
           inject_script: jsScript,
           scroll_amount: +scroll,
+          campaign_lifetime_start: startDate,
+          campaign_lifetime_end: endDate,
         });
         if (data) {
           getScenariosStats().then((res) =>
@@ -100,27 +102,21 @@ export const CreateScenario = ({
         <div className={s.title}>Create Scenario</div>
         <Input
           label="Scenario Name:"
-          subtitle="Enter scenario name."
+          // subtitle="Enter scenario name."
           placeholder="Enter name"
           value={name}
           onChange={setName}
-        />
-        <Input
-          label="Page url:"
-          subtitle="Enter page url."
-          placeholder="Enter page url"
-          value={pageUrl}
-          onChange={setPageUrl}
         />
         <div className={s.label}>Frame URLs:</div>
         <MultiSelect
           options={frame_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={frameUrlsRef}
           onChange={setFrameUrls}
+          onInputChange={(e) => console.log(e)}
         />
         <Input
           label="Time to Live (sec):"
-          subtitle="Enter TTL"
+          // subtitle="Enter TTL"
           type="number"
           placeholder="Enter time to live in seconds."
           value={ttl}
@@ -160,6 +156,13 @@ export const CreateScenario = ({
           ref={backlistRef}
           onChange={setBacklist}
         />
+        <Input
+          label="Scenarios count:"
+          placeholder="Enter count"
+          value={maxCount}
+          onChange={setMaxCount}
+          type="number"
+        />
         <Checkbox label="Clicks" checked={clicks} setChecked={setClicks} />
         {clicks && (
           <>
@@ -189,32 +192,33 @@ export const CreateScenario = ({
             />
           </>
         )}
-        <div className={s.pickers}>
-          <div>
-            <div className={s.label}>Work Time</div>
-            <span className={s.label}>From : </span>
-            <TimePicker
-              onChange={setValueFrom}
-              value={valueFrom}
-              maxTime="23:59"
-              disableClock
-              className={s.timepicker}
-              required
-            />{" "}
-            <span className={s.label}>To : </span>
-            <TimePicker
-              onChange={setValueTo}
-              value={valueTo}
-              maxTime="23:59"
-              disableClock
-              className={s.timepicker}
-              required
-            />
-          </div>
-          <div>
-            <p className={s.label}>Сampaign lifetime</p>
-            <DatePicker startDate={startDate} setStartDate={setStartDate} />
-          </div>
+        <div className={s.timePickers}>
+          <div className={s.label}>Work Time</div>
+          <span className={s.label}>From :</span>
+          <TimePicker
+            onChange={setValueFrom}
+            value={valueFrom}
+            maxTime="23:59"
+            disableClock
+            className={s.timepicker}
+            required
+          />{" "}
+          <span className={s.label}>To :</span>
+          <TimePicker
+            onChange={setValueTo}
+            value={valueTo}
+            maxTime="23:59"
+            disableClock
+            className={s.timepicker}
+            required
+          />
+        </div>
+        <p className={s.label}>Сampaign lifetime</p>
+        <div className={s.campaignPickers}>
+          <span className={s.label}>From&nbsp;: </span>
+          <DatePicker startDate={startDate} setStartDate={setStartDate} />
+          <span className={s.label}>To&nbsp;: </span>
+          <DatePicker startDate={endDate} setStartDate={setEndDate} />
         </div>
         <div className={s.label}>Profiles</div>
         <MultiSelect

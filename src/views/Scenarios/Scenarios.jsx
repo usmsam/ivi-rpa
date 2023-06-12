@@ -94,7 +94,7 @@ export const Scenarios = ({
               <th>Статус</th>
 
               <th>Запросы</th>
-              <th>ответы</th>
+              <th>Ответы</th>
               <th>Показы</th>
               <th>Fill Rate, %</th>
               <th>Show Rate, %</th>

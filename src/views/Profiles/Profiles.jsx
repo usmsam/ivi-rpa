@@ -83,7 +83,7 @@ export const Profiles = ({
                     </Fragment>
                   );
                 })
-              : "NO content"}
+              : null}
           </tbody>
           <br></br>
         </table>

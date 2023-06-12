@@ -102,38 +102,39 @@ export const Proxies = () => {
           </thead>
           <br></br>
           <tbody>
-            {state.length &&
-              state.map(
-                ({
-                  delay,
-                  host,
-                  id,
-                  password,
-                  port,
-                  status,
-                  type,
-                  username,
-                }) => {
-                  return (
-                    <tr>
-                      <th>{id}</th>
-                      <td>
-                        {host}:{port}
-                      </td>
-                      <td>{status ? status : "-"}</td>
-                      <td>{username ? username : "-"}</td>
-                      <td>{type ? type : "-"}</td>
-                      <td>{delay ? delay : "-"}</td>
-                      <td>
-                        <AiFillDelete
-                          className={s.AiFillDelete}
-                          onClick={() => deleteProxie(id)}
-                        />
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
+            {state.length
+              ? state.map(
+                  ({
+                    delay,
+                    host,
+                    id,
+                    password,
+                    port,
+                    status,
+                    type,
+                    username,
+                  }) => {
+                    return (
+                      <tr>
+                        <th>{id}</th>
+                        <td>
+                          {host}:{port}
+                        </td>
+                        <td>{status ? status : "-"}</td>
+                        <td>{username ? username : "-"}</td>
+                        <td>{type ? type : "-"}</td>
+                        <td>{delay ? delay : "-"}</td>
+                        <td>
+                          <AiFillDelete
+                            className={s.AiFillDelete}
+                            onClick={() => deleteProxie(id)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  }
+                )
+              : null}
           </tbody>
           <br></br>
         </table>

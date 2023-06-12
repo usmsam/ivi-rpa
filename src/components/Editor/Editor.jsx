@@ -24,7 +24,7 @@ export const Editor = ({
   id,
 }) => {
   const [name, setName] = useState("");
-  const [pageUrl, setPageUrl] = useState("");
+  const [maxCount, setMaxCount] = useState(null);
   const [ttl, setTtl] = useState("");
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
@@ -38,6 +38,7 @@ export const Editor = ({
   const [clicks, setClicks] = useState(false);
   const [clicks_prob, setClicksProb] = useState("");
   const [clicks_ttl, setClicksTtl] = useState("");
+  const [endDate, setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
 
   const frameUrlsRef = useRef(null);
@@ -49,7 +50,7 @@ export const Editor = ({
       const getScenariosdt = async () => {
         await updateScenario(id, {
           name: name,
-          page_url: pageUrl,
+          // page_url: pageUrl,
           frame_urls: frameUrls.map((el) => el.value) || [],
           ttl: ttl,
           width: width,
@@ -76,7 +77,6 @@ export const Editor = ({
           const { data } = await getScenarioById(id);
           if (data) {
             setName(data[0].name);
-            setPageUrl(data[0].page_url);
             setWidth(data[0].width);
             setHeight(data[0].height);
             setTtl(data[0].ttl);
@@ -119,13 +119,6 @@ export const Editor = ({
           value={name}
           onChange={setName}
         />
-        <Input
-          label="Page url:"
-          subtitle="Enter page url."
-          placeholder="Enter page url"
-          value={pageUrl}
-          onChange={setPageUrl}
-        />
         <div className={s.label}>Frame URLs:</div>
         <MultiSelect
           options={frame_urls.map((el) => ({ value: el.id, label: el.url }))}
@@ -164,13 +157,19 @@ export const Editor = ({
           placeholder="Enter scroll"
           value={scroll}
           onChange={setScroll}
-          type="number"
         />
         <div className={s.label}>Blacklist:</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}
           onChange={setBacklist}
+        />
+        <Input
+          label="Scenarios count:"
+          placeholder="Enter count"
+          value={maxCount}
+          onChange={setMaxCount}
+          type="number"
         />
         <Checkbox label="Clicks" checked={clicks} setChecked={setClicks} />
         {clicks && (
@@ -191,32 +190,34 @@ export const Editor = ({
             />
           </>
         )}
-        <div className={s.pickers}>
-          <div>
-            <div className={s.label}>Work Time</div>
-            <span className={s.label}>From : </span>
-            <TimePicker
-              onChange={setValueFrom}
-              value={valueFrom}
-              maxTime="23:59"
-              disableClock
-              className={s.timepicker}
-              required
-            />{" "}
-            <span className={s.label}>To : </span>
-            <TimePicker
-              onChange={setValueTo}
-              value={valueTo}
-              maxTime="23:59"
-              disableClock
-              className={s.timepicker}
-              required
-            />
-          </div>
-          <div>
-            <p className={s.label}>Сampaign lifetime</p>
-            <DatePicker startDate={startDate} setStartDate={setStartDate} />
-          </div>
+
+        <div className={s.timePickers}>
+          <div className={s.label}>Work Time</div>
+          <span className={s.label}>From :</span>
+          <TimePicker
+            onChange={setValueFrom}
+            value={valueFrom}
+            maxTime="23:59"
+            disableClock
+            className={s.timepicker}
+            required
+          />{" "}
+          <span className={s.label}>To :</span>
+          <TimePicker
+            onChange={setValueTo}
+            value={valueTo}
+            maxTime="23:59"
+            disableClock
+            className={s.timepicker}
+            required
+          />
+        </div>
+        <p className={s.label}>Сampaign lifetime</p>
+        <div className={s.campaignPickers}>
+          <span className={s.label}>From&nbsp;: </span>
+          <DatePicker startDate={startDate} setStartDate={setStartDate} />
+          <span className={s.label}>To&nbsp;: </span>
+          <DatePicker startDate={endDate} setStartDate={setEndDate} />
         </div>
         <div className={s.label}>Tags</div>
         <MultiSelect

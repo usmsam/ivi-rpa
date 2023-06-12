@@ -4,16 +4,23 @@ import Select from "react-select";
 import s from "./multiSelect.module.scss";
 // const animatedComponents = makeAnimated();
 export const MultiSelect = forwardRef(
-  ({ options = [], onChange = () => {}, isMulti = true }, ref) => {
+  (
+    {
+      options = [],
+      onChange = () => {},
+      isMulti = true,
+      onInputChange = () => {},
+    },
+    ref
+  ) => {
     return (
       <>
         <Select
-          // closeMenuOnSelect={false}
-          // components={animatedComponents}
           isMulti={isMulti}
           options={options}
           className={s.select}
           onChange={onChange}
+          onInputChange={onInputChange}
           ref={ref}
           styles={{
             input: (styles, { data }) => {
