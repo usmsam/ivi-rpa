@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
@@ -48,7 +48,6 @@ export const CreateScenario = ({
   const backlistRef = useRef(null);
   const profilesRef = useRef(null);
 
-  const [newFrameUrl, setNewFrameUrl] = useState("");
 
   const reset = () => {
     setName("");
