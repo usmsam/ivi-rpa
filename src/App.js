@@ -65,7 +65,7 @@ function App() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [dispatch]);
 
   const { pathname } = useLocation();
 
