@@ -184,7 +184,14 @@ export const Editor = ({
               label="Вероятноть клика (%):"
               placeholder="Введите число от 0 до 100..."
               value={clicks_prob}
-              onChange={setClicksProb}
+              onChange={(e) => {
+                setClicksProb(e);
+                if (Number(e) > 100) {
+                  setClicksProb(100);
+                } else if (Number(e) < 0) {
+                  setClicksProb(0);
+                }
+              }}
               min={0}
               max={100}
               step={1}

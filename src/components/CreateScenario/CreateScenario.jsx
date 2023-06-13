@@ -222,8 +222,10 @@ export const CreateScenario = ({
               value={clicks_prob}
               onChange={(e) => {
                 setClicksProb(e);
-                if (Number(e) > 1) {
-                  setClicksProb(1);
+                if (Number(e) > 100) {
+                  setClicksProb(100);
+                } else if (Number(e) < 0) {
+                  setClicksProb(0);
                 }
               }}
               type="number"
