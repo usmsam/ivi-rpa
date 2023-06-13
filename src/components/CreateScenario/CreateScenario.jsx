@@ -134,12 +134,12 @@ export const CreateScenario = ({
       <div className={s.editorWrapper} onClick={(e) => e.stopPropagation()}>
         <div className={s.title}>Create Scenario</div>
         <Input
-          label="Scenario Name:"
-          placeholder="Enter name"
+          label="Название сценария:"
+          placeholder="Введите название..."
           value={name}
           onChange={setName}
         />
-        <div className={s.label}>Frame URLs:</div>
+        <div className={s.label}>Сайты:</div>
         <div className={s.frameUrlSelect}>
           <MultiSelect
             options={state.allFrameUrls.map((el) => ({
@@ -176,77 +176,88 @@ export const CreateScenario = ({
           ) : null}
         </div>
         <Input
-          label="Time to Live (sec):"
-          // subtitle="Enter TTL"
-          type="number"
-          placeholder="Enter time to live in seconds."
+          label="Time to Live (секунд):"
+          placeholder="Введите TTL..."
           value={ttl}
           onChange={setTtl}
+          type="number"
         />
         <Input
-          label="Width:"
-          placeholder="Enter width"
+          label="Ширина окна:"
+          placeholder="Введите ширину.."
           value={width}
+          min={360}
+          max={1920}
           onChange={setWidth}
           type="number"
         />
         <Input
-          label="Height:"
-          placeholder="Enter height"
+          label="Высота окна:"
+          placeholder="Введите высоту.."
           value={height}
+          min={360}
+          max={1080}
           onChange={setHeight}
           type="number"
         />
         <Input
-          label="JS script:"
-          placeholder="Enter script"
+          label="Инжект скрипт:"
+          placeholder="Введите скрипт..."
           value={jsScript}
           onChange={setJsScript}
           type="text"
         />
         <Input
-          label="Scroll :"
-          placeholder="Enter scroll"
+          label="Скролл (пикселей):"
+          placeholder="Введите значение..."
           value={scroll}
           onChange={setScroll}
+          min={0}
+          max={512}
           type="number"
         />
-        <div className={s.label}>Blacklist:</div>
+        <div className={s.label}>Запещенные адреса (IP/Domain):</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}
           onChange={setBacklist}
         />
         <Input
-          label="Scenarios count:"
-          placeholder="Enter count"
+          label="Лимит запусков в сутки:"
+          placeholder="Введите значение"
+          min={0}
           value={maxCount}
           onChange={setMaxCount}
           type="number"
         />
-        <Checkbox label="Clicks" checked={clicks} setChecked={setClicks} />
+        <Checkbox
+          label="Клики включены"
+          checked={clicks}
+          setChecked={setClicks}
+        />
         {clicks && (
           <>
             <Input
-              label="Click Probability:"
-              subtitle="Enter click probability"
-              placeholder="Enter click probability as s decimal between 0 and 1."
+              label="Вероятноть клика (%):"
+              placeholder="Введите число от 0 до 100..."
               value={clicks_prob}
               onChange={(e) => {
                 setClicksProb(e);
-                if (Number(e) > 1) {
-                  setClicksProb(1);
+                if (Number(e) > 100) {
+                  setClicksProb(100);
+                } else if (Number(e) < 0) {
+                  setClicksProb(0);
                 }
               }}
               type="number"
               min={0}
-              max={1}
-              step={0.1}
+              max={100}
+              step={1}
             />
             <Input
-              label="Time to Live After Click (sec):"
-              subtitle="Enter TTL after click"
-              placeholder="Enter time to live after click in seconds."
+              label="Время до закрытия вкладки (секунд):"
+              placeholder="Введите TTL..."
+              min={0}
               value={clicks_ttl}
               onChange={setClicksTtl}
               type="number"
@@ -254,8 +265,8 @@ export const CreateScenario = ({
           </>
         )}
         <div className={s.timePickers}>
-          <div className={s.label}>Work Time</div>
-          <span className={s.label}>From :</span>
+          <div className={s.label}>График запуска</div>
+          <span className={s.label}>С</span>
           <TimePicker
             onChange={setValueFrom}
             value={valueFrom}
@@ -264,7 +275,7 @@ export const CreateScenario = ({
             className={s.timepicker}
             required
           />{" "}
-          <span className={s.label}>To :</span>
+          <span className={s.label}>До</span>
           <TimePicker
             onChange={setValueTo}
             value={valueTo}
@@ -274,14 +285,14 @@ export const CreateScenario = ({
             required
           />
         </div>
-        <p className={s.label}>Сampaign lifetime</p>
+        <p className={s.label}>Срок кампании</p>
         <div className={s.campaignPickers}>
-          <span className={s.label}>From&nbsp;: </span>
+          <span className={s.label}>С&nbsp;</span>
           <DatePicker startDate={startDate} setStartDate={setStartDate} />
-          <span className={s.label}>To&nbsp;: </span>
+          <span className={s.label}>По&nbsp;</span>
           <DatePicker startDate={endDate} setStartDate={setEndDate} />
         </div>
-        <div className={s.label}>Profiles</div>
+        <div className={s.label}>Профили</div>
         <MultiSelect
           ref={profilesRef}
           options={thumbnails.map((el) => ({ value: el.id, label: el.name }))}
@@ -292,10 +303,10 @@ export const CreateScenario = ({
             className={cn(s.editor_bottons, s.default)}
             onClick={onSubmit}
           >
-            Save
+            Сохранить
           </button>
           <button className={cn(s.editor_bottons, s.dashed)} onClick={reset}>
-            Reset
+            Сбросить
           </button>
         </div>
       </div>
