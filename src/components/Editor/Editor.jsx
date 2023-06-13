@@ -113,60 +113,66 @@ export const Editor = ({
       <div className={s.editorWrapper} onClick={(e) => e.stopPropagation()}>
         <div className={s.title}>Scenario Editor</div>
         <Input
-          label="Scenario Name:"
-          subtitle="Enter scenario name."
-          placeholder="Enter name"
+          label="Название сценария:"
+          placeholder="Введите название..."
           value={name}
           onChange={setName}
         />
-        <div className={s.label}>Frame URLs:</div>
+        <div className={s.label}>Сайты:</div>
         <MultiSelect
           options={frame_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={frameUrlsRef}
           onChange={setFrameUrls}
         />
         <Input
-          label="Time to Live (sec):"
-          subtitle="Enter TTL"
+          label="Time to Live (секунд):"
+          placeholder="Введите TTL..."
           type="number"
-          placeholder="Enter time to live in seconds."
           value={ttl}
           onChange={setTtl}
         />
         <Input
-          label="Width:"
-          placeholder="Enter width"
+          label="Ширина окна:"
+          placeholder="Введите ширину"
           value={width}
+          min={360}
+          max={1920}
           onChange={setWidth}
         />
         <Input
-          label="Height:"
-          placeholder="Enter height"
+          label="Высота окна:"
+          placeholder="Введите высоту.."
           value={height}
+          min={360}
+          max={1080}
           onChange={setHeight}
         />
         <Input
-          label="JS script:"
-          placeholder="Enter script"
+          label="Инжект скрипт:"
+          placeholder="Введите скрипт..."
           value={jsScript}
           onChange={setJsScript}
           type="text"
         />
         <Input
-          label="Scroll :"
-          placeholder="Enter scroll"
+          label="Скролл (пикселей):"
+          placeholder="Введите значение..."
           value={scroll}
           onChange={setScroll}
+          min={0}
+          max={512}
+          type="numer"
         />
-        <div className={s.label}>Blacklist:</div>
+        <div className={s.label}>Запещенные адреса (IP/Domain):</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}
           onChange={setBacklist}
         />
         <Input
-          label="Scenarios count:"
-          placeholder="Enter count"
+          label="Лимит запусков в сутки:"
+          placeholder="Введите значение"
+          min={0}
           value={maxCount}
           onChange={setMaxCount}
           type="number"
@@ -175,25 +181,28 @@ export const Editor = ({
         {clicks && (
           <>
             <Input
-              label="Click Probability:"
-              subtitle="Enter click probability"
-              placeholder="Enter click probability as s decimal between 0 and 1."
+              label="Вероятноть клика (%):"
+              placeholder="Введите число от 0 до 100..."
               value={clicks_prob}
               onChange={setClicksProb}
+              min={0}
+              max={100}
+              step={1}
             />
             <Input
-              label="Time to Live After Click (sec):"
-              subtitle="Enter TTL after click"
-              placeholder="Enter time to live after click in seconds."
+              label="Время до закрытия вкладки (секунд):"
+              placeholder="Введите TTL..."
+              min={0}
               value={clicks_ttl}
               onChange={setClicksTtl}
+              type="number"
             />
           </>
         )}
 
         <div className={s.timePickers}>
-          <div className={s.label}>Work Time</div>
-          <span className={s.label}>From :</span>
+          <div className={s.label}>График запуска</div>
+          <span className={s.label}>С</span>
           <TimePicker
             onChange={setValueFrom}
             value={valueFrom}
@@ -202,7 +211,7 @@ export const Editor = ({
             className={s.timepicker}
             required
           />{" "}
-          <span className={s.label}>To :</span>
+          <span className={s.label}>До</span>
           <TimePicker
             onChange={setValueTo}
             value={valueTo}
@@ -212,14 +221,14 @@ export const Editor = ({
             required
           />
         </div>
-        <p className={s.label}>Сampaign lifetime</p>
+        <p className={s.label}>Срок кампании</p>
         <div className={s.campaignPickers}>
-          <span className={s.label}>From&nbsp;: </span>
+          <span className={s.label}>С</span>
           <DatePicker startDate={startDate} setStartDate={setStartDate} />
-          <span className={s.label}>To&nbsp;: </span>
+          <span className={s.label}>По</span>
           <DatePicker startDate={endDate} setStartDate={setEndDate} />
         </div>
-        <div className={s.label}>Tags</div>
+        <div className={s.label}>Профили</div>
         <MultiSelect
           ref={profilesRef}
           options={thumbnails.map((el) => ({ value: el.id, label: el.name }))}
@@ -230,7 +239,7 @@ export const Editor = ({
             className={cn(s.editor_bottons, s.default)}
             onClick={onSubmit}
           >
-            Save
+            Сохранить
           </button>
           <button className={cn(s.editor_bottons, s.dashed)}>Reset</button>
         </div>

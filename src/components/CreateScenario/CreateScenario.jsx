@@ -160,15 +160,14 @@ export const CreateScenario = ({
         </div>
         <Input
           label="Time to Live (секунд):"
-          // subtitle="Enter TTL"
-          type="number"
           placeholder="Введите TTL..."
           value={ttl}
           onChange={setTtl}
+          type="number"
         />
         <Input
           label="Ширина окна:"
-          placeholder="Введите ширину"
+          placeholder="Введите ширину.."
           value={width}
           min={360}
           max={1920}
@@ -176,8 +175,8 @@ export const CreateScenario = ({
           type="number"
         />
         <Input
-          label="Height:"
-          placeholder="Enter height"
+          label="Высота окна:"
+          placeholder="Введите высоту.."
           value={height}
           min={360}
           max={1080}
@@ -214,11 +213,11 @@ export const CreateScenario = ({
           onChange={setMaxCount}
           type="number"
         />
-        <Checkbox label="Clicks" checked={clicks} setChecked={setClicks} />
+        <Checkbox label="Клики включены" checked={clicks} setChecked={setClicks} />
         {clicks && (
           <>
             <Input
-              label="Click Probability:"
+              label="Вероятноть клика (%):"
               placeholder="Введите число от 0 до 100..."
               value={clicks_prob}
               onChange={(e) => {
@@ -235,6 +234,7 @@ export const CreateScenario = ({
             <Input
               label="Время до закрытия вкладки (секунд):"
               placeholder="Введите TTL..."
+              min={0}
               value={clicks_ttl}
               onChange={setClicksTtl}
               type="number"
@@ -269,7 +269,7 @@ export const CreateScenario = ({
           <span className={s.label}>По&nbsp;</span>
           <DatePicker startDate={endDate} setStartDate={setEndDate} />
         </div>
-        <div className={s.label}>Profiles</div>
+        <div className={s.label}>Профили</div>
         <MultiSelect
           ref={profilesRef}
           options={thumbnails.map((el) => ({ value: el.id, label: el.name }))}
@@ -280,10 +280,10 @@ export const CreateScenario = ({
             className={cn(s.editor_bottons, s.default)}
             onClick={onSubmit}
           >
-            Save
+            Сохранить
           </button>
           <button className={cn(s.editor_bottons, s.dashed)} onClick={reset}>
-            Reset
+            Сбросить
           </button>
         </div>
       </div>
