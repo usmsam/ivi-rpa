@@ -20,6 +20,7 @@ export const MultiSelect = forwardRef(
         <Select
           isMulti={isMulti}
           isClearable={false}
+          inputValue={inputValue}
           menuIsOpen={menuIsOpen}
           options={options}
           className={s.select}

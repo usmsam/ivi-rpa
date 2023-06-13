@@ -1,28 +1,31 @@
-import cn from "classnames";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import TimePicker from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
+import { useDispatch, useSelector } from "react-redux";
+import cn from "classnames";
+
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Input } from "../Input/Input";
-
-import s from "./createScenario.module.scss";
 import { MultiSelect } from "../MultiSelect/MultiSelect";
+import { DatePicker } from "../DatePicker/DatePicker";
+
+import { setScenariosData } from "../../shared/store/slices/scenarios";
+import { getFrameUrls, postFrameUrls } from "../../shared/api/routes/tags";
+import {
+  setAllFrameUrls,
+  setFrameUrl,
+} from "../../shared/store/slices/frameUrl";
 import {
   getScenariosStats,
   postScenarios,
 } from "../../shared/api/routes/scenarios";
-import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setScenariosData } from "../../shared/store/slices/scenarios";
-import { DatePicker } from "../DatePicker/DatePicker";
-import { postFrameUrls } from "../../shared/api/routes/tags";
-import { setFrameUrl } from "../../shared/store/slices/frameUrl";
+
+import "react-clock/dist/Clock.css";
+import "react-time-picker/dist/TimePicker.css";
+import s from "./createScenario.module.scss";
 
 export const CreateScenario = ({
   isActive = false,
   setIsActive = () => {},
-  frame_urls = [],
   backlist_urls = [],
   thumbnails = [],
 }) => {
@@ -43,11 +46,14 @@ export const CreateScenario = ({
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [maxCount, setMaxCount] = useState("");
+  const [menuIsOpen, setMenuIsOpen] = useState();
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
   const profilesRef = useRef(null);
 
+  const dispatch = useDispatch();
+  let state = useSelector((state) => state.frameUrl);
 
   const reset = () => {
     setName("");
@@ -63,8 +69,7 @@ export const CreateScenario = ({
     setValueFrom(null);
     setValueTo(null);
   };
-  const dispatch = useDispatch();
-  let state = useSelector((state) => state.frameUrl);
+
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
@@ -98,17 +103,29 @@ export const CreateScenario = ({
       console.log(error);
     }
   };
+
   const createFrameUrl = async (url) => {
     try {
       if (url === "") return;
       const data = await postFrameUrls({ url: url });
-      console.log(data);
+      if (data) {
+        let { data: newUrls } = await getFrameUrls();
+
+        let newUrl = newUrls.filter((el) => el.url === url)[0];
+        let newSelectOption = { value: newUrl.id, label: newUrl.url };
+        setFrameUrls((prev) => [...prev, newSelectOption]);
+        dispatch(setFrameUrl(""));
+        dispatch(setAllFrameUrls(newUrls));
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [menuIsOpen, setMenuIsOpen] = useState();
+  useEffect(() => {
+    frameUrlsRef.current.setValue(frameUrls);
+  }, [frameUrls]);
+
   return (
     <div
       className={cn(s.editor, { [s.active]: isActive })}
@@ -118,7 +135,6 @@ export const CreateScenario = ({
         <div className={s.title}>Create Scenario</div>
         <Input
           label="Scenario Name:"
-          // subtitle="Enter scenario name."
           placeholder="Enter name"
           value={name}
           onChange={setName}
@@ -155,7 +171,7 @@ export const CreateScenario = ({
                 dispatch(setFrameUrl(""));
               }}
             >
-              Send
+              Add
             </button>
           ) : null}
         </div>

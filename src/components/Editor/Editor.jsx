@@ -14,6 +14,12 @@ import {
 } from "../../shared/api/routes/scenarios";
 import { useRef } from "react";
 import { DatePicker } from "../DatePicker/DatePicker";
+import { useDispatch, useSelector } from "react-redux";
+import { getFrameUrls, postFrameUrls } from "../../shared/api/routes/tags";
+import {
+  setAllFrameUrls,
+  setFrameUrl,
+} from "../../shared/store/slices/frameUrl";
 
 export const Editor = ({
   isActive = false,
@@ -38,19 +44,44 @@ export const Editor = ({
   const [clicks, setClicks] = useState(false);
   const [clicks_prob, setClicksProb] = useState("");
   const [clicks_ttl, setClicksTtl] = useState("");
-  const [endDate, setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [menuIsOpen, setMenuIsOpen] = useState();
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
   const profilesRef = useRef(null);
+
+  const dispatch = useDispatch();
+  let state = useSelector((state) => state.frameUrl);
+
+  const createFrameUrl = async (url) => {
+    try {
+      if (url === "") return;
+      const data = await postFrameUrls({ url: url });
+      if (data) {
+        let { data: newUrls } = await getFrameUrls();
+
+        let newUrl = newUrls.filter((el) => el.url === url)[0];
+        let newSelectOption = { value: newUrl.id, label: newUrl.url };
+        setFrameUrls((prev) => [...prev, newSelectOption]);
+        dispatch(setFrameUrl(""));
+        dispatch(setAllFrameUrls(newUrls));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    frameUrlsRef.current.setValue(frameUrls);
+  }, [frameUrls]);
 
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
         await updateScenario(id, {
           name: name,
-          // page_url: pageUrl,
           frame_urls: frameUrls.map((el) => el.value) || [],
           ttl: ttl,
           width: width,
@@ -87,6 +118,8 @@ export const Editor = ({
             setScroll(data[0].scroll_amount);
             setValueTo(data[0].work_timerange_end.slice(0, 4));
             setValueFrom(data[0].work_timerange_start.slice(0, 4));
+            setStartDate(data[0].campaign_lifetime_start);
+            setEndDate(data[0].campaign_lifetime_end);
             frameUrlsRef.current.setValue(
               data[0].frame_urls.map((el) => ({ value: el.id, label: el.url }))
             );
@@ -120,11 +153,41 @@ export const Editor = ({
           onChange={setName}
         />
         <div className={s.label}>Frame URLs:</div>
-        <MultiSelect
-          options={frame_urls.map((el) => ({ value: el.id, label: el.url }))}
-          ref={frameUrlsRef}
-          onChange={setFrameUrls}
-        />
+        <div className={s.frameUrlSelect}>
+          <MultiSelect
+            options={state.allFrameUrls.map((el) => ({
+              value: el.id,
+              label: el.url,
+            }))}
+            ref={frameUrlsRef}
+            onChange={setFrameUrls}
+            inputValue={state.url}
+            onInputChange={(inputValue, { action, prevInputValue }) => {
+              if (action === "input-change") {
+                dispatch(setFrameUrl(inputValue));
+                return inputValue;
+              }
+              if (action === "menu-close") {
+                if (prevInputValue) setMenuIsOpen(true);
+                else setMenuIsOpen(undefined);
+              }
+              dispatch(setFrameUrl(prevInputValue));
+              return prevInputValue;
+            }}
+            menuIsOpen={menuIsOpen}
+          />
+          {state.url !== "" ? (
+            <button
+              className={s.sendButton}
+              onClick={() => {
+                createFrameUrl(state.url);
+                dispatch(setFrameUrl(""));
+              }}
+            >
+              Add
+            </button>
+          ) : null}
+        </div>
         <Input
           label="Time to Live (sec):"
           subtitle="Enter TTL"
