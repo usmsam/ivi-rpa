@@ -34,7 +34,8 @@ export const CreateScenario = ({
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
   const [jsScript, setJsScript] = useState("");
-  const [scroll, setScroll] = useState("");
+  // const [scroll, setScroll] = useState("");
+  const [playerVisibility, setPlayerVisibility] = useState("");
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
@@ -87,7 +88,8 @@ export const CreateScenario = ({
           blacklist_ids: backlist.map((el) => el.value),
           profiles_ids: profiles_ids.map((el) => el.value),
           inject_script: jsScript,
-          scroll_amount: +scroll,
+          // scroll_amount: +scroll,
+          player_visibility: +playerVisibility,
           campaign_lifetime_start: startDate,
           campaign_lifetime_end: endDate,
         });
@@ -208,15 +210,15 @@ export const CreateScenario = ({
           type="text"
         />
         <Input
-          label="Скролл (пикселей):"
+          label="Видимость плеера (%):"
           placeholder="Введите значение..."
-          value={scroll}
-          onChange={setScroll}
+          value={playerVisibility}
+          onChange={setPlayerVisibility}
           min={0}
-          max={512}
+          max={100}
           type="number"
         />
-        <div className={s.label}>Запещенные адреса (IP/Domain):</div>
+        <div className={s.label}>Запрещенные адреса (IP/Domain):</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}

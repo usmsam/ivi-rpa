@@ -35,7 +35,8 @@ export const Editor = ({
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
   const [jsScript, setJsScript] = useState("");
-  const [scroll, setScroll] = useState("");
+  // const [scroll, setScroll] = useState("");
+  const [playerVisibility, setPlayerVisibility] = useState("");
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
   const [frameUrls, setFrameUrls] = useState([]);
@@ -92,7 +93,8 @@ export const Editor = ({
           click_ttl: clicks_ttl,
           profiles_ids: profiles_ids.map((el) => el.value) || [],
           inject_script: jsScript,
-          scroll_amount: scroll,
+          // scroll_amount: scroll,
+          player_visibility: playerVisibility,
         });
       };
       getScenariosdt();
@@ -115,7 +117,7 @@ export const Editor = ({
             setClicksProb(data[0].click_prob);
             setClicksTtl(data[0].click_ttl);
             setJsScript(data[0].inject_script);
-            setScroll(data[0].scroll_amount);
+            // setScroll(data[0].scroll_amount);
             setValueTo(data[0].work_timerange_end.slice(0, 4));
             setValueFrom(data[0].work_timerange_start.slice(0, 4));
             setStartDate(data[0].campaign_lifetime_start);
@@ -129,6 +131,7 @@ export const Editor = ({
             profilesRef.current.setValue(
               data[0].profiles.map((el) => ({ value: el.id, label: el.name }))
             );
+            setPlayerVisibility(data[0].player_visibility);
           }
         }
       };
@@ -218,15 +221,15 @@ export const Editor = ({
           type="text"
         />
         <Input
-          label="Скролл (пикселей):"
+          label="Видимость плеера (%):"
           placeholder="Введите значение..."
-          value={scroll}
-          onChange={setScroll}
+          value={playerVisibility}
+          onChange={setPlayerVisibility}
           min={0}
           max={512}
           type="numer"
         />
-        <div className={s.label}>Запещенные адреса (IP/Domain):</div>
+        <div className={s.label}>Запрещенные адреса (IP/Domain):</div>
         <MultiSelect
           options={backlist_urls.map((el) => ({ value: el.id, label: el.url }))}
           ref={backlistRef}
