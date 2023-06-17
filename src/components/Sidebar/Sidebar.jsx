@@ -43,7 +43,7 @@ export const Sidebar = () => {
           </li>
         </Link>
         <Link to={"/sites"}>
-          <li className={cn(s.linkItem, { [s.active]: pathname === "/proxy" })}>
+          <li className={cn(s.linkItem, { [s.active]: pathname === "/sites" })}>
             <TbWorldWww />
             Сайты
           </li>
