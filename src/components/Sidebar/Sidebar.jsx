@@ -1,5 +1,6 @@
 import { SiTraefikproxy } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
+import { TbWorldWww } from "react-icons/tb";
 import { ImExit } from "react-icons/im";
 import { Link, useLocation } from "react-router-dom";
 import { AiFillControl } from "react-icons/ai";
@@ -39,6 +40,12 @@ export const Sidebar = () => {
           <li className={cn(s.linkItem, { [s.active]: pathname === "/proxy" })}>
             <SiTraefikproxy />
             Прокси
+          </li>
+        </Link>
+        <Link to={"/sites"}>
+          <li className={cn(s.linkItem, { [s.active]: pathname === "/proxy" })}>
+            <TbWorldWww />
+            Сайты
           </li>
         </Link>
       </ul>

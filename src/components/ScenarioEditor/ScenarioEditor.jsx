@@ -6,7 +6,7 @@ import "react-clock/dist/Clock.css";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Input } from "../Input/Input";
 
-import s from "./editor.module.scss";
+import s from "./scenarioEditor.module.scss";
 import { MultiSelect } from "../MultiSelect/MultiSelect";
 import {
   getScenarioById,
@@ -21,7 +21,7 @@ import {
   setFrameUrl,
 } from "../../shared/store/slices/frameUrl";
 
-export const Editor = ({
+export const ScenarioEditor = ({
   isActive = false,
   setIsActive = () => {},
   frame_urls = [],
@@ -35,7 +35,6 @@ export const Editor = ({
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
   const [jsScript, setJsScript] = useState("");
-  // const [scroll, setScroll] = useState("");
   const [playerVisibility, setPlayerVisibility] = useState("");
   const [valueFrom, setValueFrom] = useState("");
   const [valueTo, setValueTo] = useState("");
@@ -74,10 +73,6 @@ export const Editor = ({
     }
   };
 
-  useEffect(() => {
-    frameUrlsRef.current.setValue(frameUrls);
-  }, [frameUrls]);
-
   const onSubmit = () => {
     try {
       const getScenariosdt = async () => {
@@ -93,7 +88,6 @@ export const Editor = ({
           click_ttl: clicks_ttl,
           profiles_ids: profiles_ids.map((el) => el.value) || [],
           inject_script: jsScript,
-          // scroll_amount: scroll,
           player_visibility: playerVisibility,
         });
       };
@@ -102,6 +96,10 @@ export const Editor = ({
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    frameUrlsRef.current.setValue(frameUrls);
+  }, [frameUrls]);
 
   useEffect(() => {
     try {
@@ -117,7 +115,6 @@ export const Editor = ({
             setClicksProb(data[0].click_prob);
             setClicksTtl(data[0].click_ttl);
             setJsScript(data[0].inject_script);
-            // setScroll(data[0].scroll_amount);
             setValueTo(data[0].work_timerange_end.slice(0, 4));
             setValueFrom(data[0].work_timerange_start.slice(0, 4));
             setStartDate(data[0].campaign_lifetime_start);
@@ -213,10 +210,13 @@ export const Editor = ({
           max={1080}
           onChange={setHeight}
         />
+        {/* TODO */}
         <Input
-          label="Инжект скрипт:"
-          placeholder="Введите скрипт..."
+          label="VAST-тэг:"
+          placeholder="Введите тэг..."
+          // TODO
           value={jsScript}
+          // TODO
           onChange={setJsScript}
           type="text"
         />

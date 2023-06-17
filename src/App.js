@@ -1,16 +1,16 @@
-import s from "./App.module.scss";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+
 import { useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 
+import { Profiles, Proxies, Scenarios, Settings, Sites } from "./views";
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { Editor } from "./components/Editor/Editor";
-import { CreateProfile } from "./components/CreateProfile/CreateProfile";
-import { useEffect, useState } from "react";
-import { Proxies } from "./views/Proxies/Proxies";
-import { Scenarios } from "./views/Scenarios/Scenarios";
-import { Settings } from "./views/Settings/Settings";
-import { Profiles } from "./views/Profiles/Profiles";
 import { ProfileEdit } from "./components/ProlifeEdit/ProfileEdit";
+import { CreateScenario } from "./components/CreateScenario/CreateScenario";
+import { CreateProfile } from "./components/CreateProfile/CreateProfile";
+import { ScenarioEditor } from "./components/ScenarioEditor/ScenarioEditor";
+
 import {
   getBlacklistUrls,
   getBrowsers,
@@ -20,16 +20,17 @@ import {
   getProfilesThumbnails,
   getTags,
 } from "./shared/api/routes/tags";
-import { CreateScenario } from "./components/CreateScenario/CreateScenario";
-
-import { useDispatch } from "react-redux";
 import { setAllFrameUrls } from "./shared/store/slices/frameUrl";
+
+import s from "./App.module.scss";
+import { AddSitesModal } from "./components/AddSitesModal/AddSitesModal";
 
 function App() {
   const [state, setstate] = useState(false);
   const [state2, setstate2] = useState(false);
   const [state3, setstate3] = useState(false);
   const [state4, setstate4] = useState(false);
+  const [state5, setstate5] = useState(false);
   const [tags, settags] = useState([]);
   const [urls1, setUrls1] = useState([]);
   const [urls2, setUrls2] = useState([]);
@@ -71,7 +72,7 @@ function App() {
 
   return (
     <>
-      <Editor
+      <ScenarioEditor
         isActive={state}
         setIsActive={setstate}
         backlist_urls={urls2}
@@ -103,6 +104,7 @@ function App() {
         frame_urls={urls1}
         thumbnails={thumbnails}
       />
+      <AddSitesModal isActive={state5} setIsActive={setstate5} />
       <div className={s.App}>
         <Sidebar />
         <main className={s.main}>
@@ -133,12 +135,14 @@ function App() {
               createHandler={setstate3}
               setEditableProfile={setEditableProfile}
             />
-          ) : (
-            <Scenarios
-              onClick={setstate}
-              setEditableScenario={setEditableScenario}
-              createScenarioHandler={setstate4}
+          ) : pathname === "/sites" ? (
+            <Sites
+              onClick={() => {
+                setstate5((prev) => !prev);
+              }}
             />
+          ) : (
+            <> 404 страница не найдена</>
           )}
           {/* <Routes>
             <Route

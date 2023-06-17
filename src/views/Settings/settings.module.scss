@@ -196,3 +196,16 @@
 .input {
     max-width: 170px;
 }
+
+.withRadioButtons {
+    display: flex;
+    gap: 15px;
+}
+
+.scriptCheckbox {
+    margin-bottom: 0 !important;
+}
+
+.injectScriptInput {
+    max-width: 500px;
+}

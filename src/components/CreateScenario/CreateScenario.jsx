@@ -48,7 +48,7 @@ export const CreateScenario = ({
   const [endDate, setEndDate] = useState(new Date());
   const [maxCount, setMaxCount] = useState("");
   const [menuIsOpen, setMenuIsOpen] = useState();
-  const [scriptType, setScriptType] = useState("script");
+  // const [scriptType, setScriptType] = useState("script");
 
   const frameUrlsRef = useRef(null);
   const backlistRef = useRef(null);
@@ -203,28 +203,17 @@ export const CreateScenario = ({
           onChange={setHeight}
           type="number"
         />
-        <div className={cn(s.label, s.withRadioButtons)}>
-          <span>Инжект скрипт:</span>
-          <Checkbox
-            label="script"
-            checked={scriptType === "script"}
-            setChecked={() => setScriptType("script")}
-            className={s.scriptCheckbox}
-          />
-          <Checkbox
-            label="iframe"
-            checked={scriptType === "iframe"}
-            setChecked={() => setScriptType("iframe")}
-            className={s.scriptCheckbox}
-          />
-        </div>
+        {/* TODO */}
         <Input
-          // label="Инжект скрипт:"
-          placeholder="Введите скрипт..."
+          label="VAST-тэг:"
+          placeholder="Введите тэг..."
+          // TODO
           value={jsScript}
+          // TODO
           onChange={setJsScript}
           type="text"
         />
+
         <Input
           label="Видимость плеера (%) от 1 до 100:"
           placeholder="Введите значение..."
